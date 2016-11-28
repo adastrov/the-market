@@ -5,23 +5,23 @@
           http://dozer.sourceforge.net/schema/beanmapping.xsd">
 
     <mapping>
-        <class-a>Shop.pavelpadalka.u.com.gitlab.entity.Product</class-a>
-        <class-b>Shop.pavelpadalka.u.com.gitlab.dto.ProductDTO</class-b>
+        <class-a>market.pavelpadalka.u.com.gitlab.entity.Product</class-a>
+        <class-b>market.pavelpadalka.u.com.gitlab.dto.ProductDTO</class-b>
     </mapping>
 
     <mapping>
-        <class-a>Shop.pavelpadalka.u.com.gitlab.entity.ProductGroup</class-a>
-        <class-b>Shop.pavelpadalka.u.com.gitlab.dto.ProductGroupDTO</class-b>
+        <class-a>market.pavelpadalka.u.com.gitlab.entity.ProductGroup</class-a>
+        <class-b>market.pavelpadalka.u.com.gitlab.dto.ProductGroupDTO</class-b>
     </mapping>
 
     <mapping>
-        <class-a>Shop.pavelpadalka.u.com.gitlab.entity.Transaction</class-a>
-        <class-b>Shop.pavelpadalka.u.com.gitlab.dto.TransactionDTO</class-b>
+        <class-a>market.pavelpadalka.u.com.gitlab.entity.Transaction</class-a>
+        <class-b>market.pavelpadalka.u.com.gitlab.dto.TransactionDTO</class-b>
     </mapping>
 
     <mapping>
-        <class-a>Shop.pavelpadalka.u.com.gitlab.entity.User</class-a>
-        <class-b>Shop.pavelpadalka.u.com.gitlab.dto.UserDTO</class-b>
+        <class-a>market.pavelpadalka.u.com.gitlab.entity.User</class-a>
+        <class-b>market.pavelpadalka.u.com.gitlab.dto.UserDTO</class-b>
     </mapping>
 
 </mappings>
