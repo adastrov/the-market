@@ -13,7 +13,6 @@ public class AppPropertiesHolder {
     private static String databaseURL;
     private static String databaseUser;
     private static String databasePassword;
-    private static ResourceBundle resourceBundle;
 
     private AppPropertiesHolder() {
     }

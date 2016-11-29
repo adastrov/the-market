@@ -20,10 +20,13 @@ public class DataSource {
                     instance = new DataSource();
             }
         }
+
         return instance;
+
     }
 
     public Connection createConnection() {
+
         Connection connection = null;
 
         try {

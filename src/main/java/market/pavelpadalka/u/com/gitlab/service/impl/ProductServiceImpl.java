@@ -26,20 +26,37 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public ProductDTO findProductById(Integer id) {
-        Product productById = productDAO.findProductById(id);
-        ProductDTO productDTO = Transformer.transformProductToProductDTO(productById);
-        return productDTO;
+
+        ProductDTO resProductDTO = null;
+        Product product = productDAO.findProductById(id);
+
+        if(product!=null) {
+            resProductDTO = Transformer.transformProductToProductDTO(product);
+        }
+
+        return resProductDTO;
+
     }
 
-    public boolean createProduct(ProductDTO product) {
-        return false;
+    public boolean createProduct(ProductDTO productDTO) {
+
+        Product createdProduct = productDAO.create(Transformer.transformProductDTOToProduct(productDTO));
+
+        return createdProduct != null;
+
     }
 
-    public boolean updateProduct(ProductDTO product) {
-        return false;
+    public boolean updateProduct(ProductDTO productDTO) {
+
+        Product updatedProduct = productDAO.update(Transformer.transformProductDTOToProduct(productDTO));
+
+        return updatedProduct != null;
+
     }
 
     public boolean deleteProduct(Integer id) {
-        return false;
+
+        return productDAO.delete(id);
+
     }
 }

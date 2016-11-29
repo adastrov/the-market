@@ -3,7 +3,7 @@ package market.pavelpadalka.u.com.gitlab.dto;
 import market.pavelpadalka.u.com.gitlab.entity.UserSex;
 import market.pavelpadalka.u.com.gitlab.entity.UserRole;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 public class UserDTO {

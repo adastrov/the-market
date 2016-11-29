@@ -5,30 +5,27 @@ import market.pavelpadalka.u.com.gitlab.service.api.ProductService;
 import market.pavelpadalka.u.com.gitlab.service.api.UserService;
 import market.pavelpadalka.u.com.gitlab.service.impl.ProductServiceImpl;
 import market.pavelpadalka.u.com.gitlab.service.impl.UserServiceImpl;
+import market.pavelpadalka.u.com.gitlab.dto.UserDTO;
 
 public class Main {
 
     private static UserService userService = UserServiceImpl.getInstance();
+    private static ProductService productService = ProductServiceImpl.getInstance();
 
     public static void main(String[] args) {
 
-//        for (int i = 0; i < 10; i++) {
-//            UserDTO user = new UserDTO();
-//            user.setLogin("login_" + i);
-//            user.setPassword("password_" + i);
-//            user.setFirstName("name_" + i);
-//            userService.create(user);
-//        }
-//
-//        UserDTO byLoginAndPassword = userService.findByLoginAndPassword("login_5", "password_5");
-//        UserDTO wrongUser = userService.findByLoginAndPassword("login_1", "password_2");
-//        System.out.println(byLoginAndPassword);
-//        System.out.println(wrongUser);
+        ProductDTO product = productService.findProductById(3);
+        Boolean isUpdated  = productService.updateProduct(product);
+        Boolean isCreated  = productService.createProduct(product);
+        //Boolean isDeleted  = productService.deleteProduct(4);
 
-        ProductService productDAO = ProductServiceImpl.getInstance();
-        ProductDTO product = productDAO.findProductById(1);
+        System.out.println("Product id: " + product.getId());
+        System.out.println("Was created? " + isCreated);
+        System.out.println("Was updated? " + isUpdated);
+        //System.out.println("Was Deleted? " + isDeleted);
 
-        System.out.println(product.toString());
+        UserDTO user = userService.findByLoginAndEmail("dssd", "dfdf");
+        System.out.println("User id: " + user.getId());
 
     }
 

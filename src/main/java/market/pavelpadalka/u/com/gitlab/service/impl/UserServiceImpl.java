@@ -1,6 +1,5 @@
 package market.pavelpadalka.u.com.gitlab.service.impl;
 
-
 import market.pavelpadalka.u.com.gitlab.dao.api.UserDAO;
 import market.pavelpadalka.u.com.gitlab.dao.impl.UserDAOImpl;
 import market.pavelpadalka.u.com.gitlab.dto.UserDTO;
@@ -27,33 +26,59 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserDTO findByLoginAndPassword(String login, String password) {
+
         UserDTO userResDTO = null;
+
         User user = userDAO.findByLoginAndPassword(login, password);
         if (user != null) {
             userResDTO = Transformer.transformUserToUserDTO(user);
         }
+
         return userResDTO;
     }
 
     public UserDTO findByLoginAndEmail(String login, String email) {
-        return null;
+
+        UserDTO userResDTO = null;
+
+        User user = userDAO.findByLoginAndEmail(login, email);
+        if (user != null) {
+            userResDTO = Transformer.transformUserToUserDTO(user);
+        }
+
+        return userResDTO;
+
     }
 
     public UserDTO create(UserDTO userDTO) {
+
         UserDTO resUserDto = null;
         User user = Transformer.transformUserDTOToUser(userDTO);
         User createdUser = userDAO.create(user);
+
         if (createdUser != null) {
             resUserDto = Transformer.transformUserToUserDTO(createdUser);
         }
+
         return resUserDto;
     }
 
     public boolean delete(Integer id) {
-        return false;
+
+        return userDAO.delete(id);
+
     }
 
-    public UserDTO update(UserDTO user) {
-        return null;
+    public UserDTO update(UserDTO userDTO) {
+
+        UserDTO resUserDto = null;
+        User updatedUser = userDAO.update(Transformer.transformUserDTOToUser(userDTO));
+
+        if (updatedUser != null) {
+            resUserDto = Transformer.transformUserToUserDTO(updatedUser);
+        }
+
+        return resUserDto;
+
     }
 }
