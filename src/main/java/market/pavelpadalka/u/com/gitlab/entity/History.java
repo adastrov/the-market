@@ -1,8 +1,8 @@
 package market.pavelpadalka.u.com.gitlab.entity;
 
-import java.util.Date;
+import java.sql.Date;
 
-public class Transaction {
+public class History {
 
     private Integer id;
     private User    user;

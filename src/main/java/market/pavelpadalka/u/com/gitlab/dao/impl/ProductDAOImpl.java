@@ -46,10 +46,10 @@ public class ProductDAOImpl implements ProductDAO {
             if (resultSet.next()) {
                 product = new Product();
                 product.setId(resultSet.getInt("product_id"));
-                product.setTitle(resultSet.getString("product_Title"));
-                product.setDescription(resultSet.getString("product_Description"));
-                product.setPrice(resultSet.getDouble("product_Price"));
-                product.setCount(resultSet.getInt("product_Count"));
+                product.setTitle(resultSet.getString("product_title"));
+                product.setDescription(resultSet.getString("product_description"));
+                product.setPrice(resultSet.getDouble("product_price"));
+                product.setCount(resultSet.getInt("product_count"));
             }
 
         } catch (SQLException e) {
@@ -57,6 +57,7 @@ public class ProductDAOImpl implements ProductDAO {
         }
 
         return product;
+
     }
 
     public Product create(Product product) {

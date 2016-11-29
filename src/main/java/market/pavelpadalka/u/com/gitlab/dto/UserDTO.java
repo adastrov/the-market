@@ -17,7 +17,7 @@ public class UserDTO {
     private UserSex sex;
     private String   email;
     private UserRole role;
-    private List<TransactionDTO> transactionDTOList;
+    private List<HistoryDTO> historyDTOList;
 
 
     public Integer getId() {
@@ -92,11 +92,11 @@ public class UserDTO {
         this.role = role;
     }
 
-    public List<TransactionDTO> getTransactionDTOList() {
-        return transactionDTOList;
+    public List<HistoryDTO> getHistoryDTOList() {
+        return historyDTOList;
     }
 
-    public void setTransactionDTOList(List<TransactionDTO> transactionDTOList) {
-        this.transactionDTOList = transactionDTOList;
+    public void setHistoryDTOList(List<HistoryDTO> historyDTOList) {
+        this.historyDTOList = historyDTOList;
     }
 }

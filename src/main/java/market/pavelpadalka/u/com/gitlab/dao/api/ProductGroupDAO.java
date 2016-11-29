@@ -7,10 +7,11 @@ import java.util.List;
 
 public interface ProductGroupDAO {
 
-    List<Product> findProducts(Integer id);
-
+    ProductGroup findProductGroupById(Integer id);
     ProductGroup create(ProductGroup productGroup);
     ProductGroup update(ProductGroup productGroup);
     boolean      delete(Integer id);
+
+    List<Product> findProducts(Integer productGroupId);
 
 }

@@ -14,7 +14,7 @@ public class User {
     private UserSex  sex;
     private String   email;
     private UserRole role;
-    private List<Transaction> transactions;
+    private List<History> histories;
 
     public Integer getId() {
         return id;
@@ -88,12 +88,12 @@ public class User {
         this.role = role;
     }
 
-    public List<Transaction> getTransactions() {
-        return transactions;
+    public List<History> getHistories() {
+        return histories;
     }
 
-    public void setTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
+    public void setHistories(List<History> histories) {
+        this.histories = histories;
     }
 
     @Override

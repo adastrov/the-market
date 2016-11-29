@@ -15,8 +15,8 @@
     </mapping>
 
     <mapping>
-        <class-a>market.pavelpadalka.u.com.gitlab.entity.Transaction</class-a>
-        <class-b>market.pavelpadalka.u.com.gitlab.dto.TransactionDTO</class-b>
+        <class-a>market.pavelpadalka.u.com.gitlab.entity.History</class-a>
+        <class-b>market.pavelpadalka.u.com.gitlab.dto.HistoryDTO</class-b>
     </mapping>
 
     <mapping>

@@ -5,7 +5,7 @@ import market.pavelpadalka.u.com.gitlab.entity.User;
 
 import java.util.Date;
 
-public class TransactionDTO {
+public class HistoryDTO {
 
     private Integer id;
     private User user;

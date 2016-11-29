@@ -3,10 +3,10 @@ package market.pavelpadalka.u.com.gitlab.helper;
 import market.pavelpadalka.u.com.gitlab.dto.ProductDTO;
 import market.pavelpadalka.u.com.gitlab.dto.ProductGroupDTO;
 import market.pavelpadalka.u.com.gitlab.entity.ProductGroup;
-import market.pavelpadalka.u.com.gitlab.dto.TransactionDTO;
+import market.pavelpadalka.u.com.gitlab.dto.HistoryDTO;
 import market.pavelpadalka.u.com.gitlab.dto.UserDTO;
 import market.pavelpadalka.u.com.gitlab.entity.Product;
-import market.pavelpadalka.u.com.gitlab.entity.Transaction;
+import market.pavelpadalka.u.com.gitlab.entity.History;
 import market.pavelpadalka.u.com.gitlab.entity.User;
 import org.dozer.DozerBeanMapperSingletonWrapper;
 import org.dozer.Mapper;
@@ -150,44 +150,44 @@ public class Transformer {
 
     }
 
-    public static TransactionDTO transformTransactionToTransactionDTO(Transaction transaction) {
+    public static HistoryDTO transformHistoryToHistoryDTO(History history) {
 
         Mapper mapper = DozerBeanMapperSingletonWrapper.getInstance();
 
-        return mapper.map(transaction, TransactionDTO.class);
+        return mapper.map(history, HistoryDTO.class);
 
     }
 
-    public static Transaction transformTransactionDTOToTransaction(TransactionDTO transactionDTO) {
+    public static History transformHistoryDTOToHistory(HistoryDTO historyDTO) {
 
         Mapper mapper = DozerBeanMapperSingletonWrapper.getInstance();
 
-        return mapper.map(transactionDTO, Transaction.class);
+        return mapper.map(historyDTO, History.class);
 
     }
 
-    public static List<Transaction> transformListTransactionDTOToListTransaction(List<TransactionDTO> transactionDTOList) {
+    public static List<History> transformListHistoryDTOToListHistory(List<HistoryDTO> historyDTOList) {
 
-        List<Transaction> transactions = new LinkedList<Transaction>();
+        List<History> histories = new LinkedList<History>();
 
-        for (TransactionDTO transactionDTO : transactionDTOList)
+        for (HistoryDTO historyDTO : historyDTOList)
         {
-            Transaction transaction = transformTransactionDTOToTransaction(transactionDTO);
-            transactions.add(transaction);
+            History history = transformHistoryDTOToHistory(historyDTO);
+            histories.add(history);
         }
 
-        return transactions;
+        return histories;
 
     }
 
-    public static List<TransactionDTO> transformListTransactionToListTransactionDTO(List<Transaction> transactionList) {
+    public static List<HistoryDTO> transformListHistoryToListHistoryDTO(List<History> historyList) {
 
-        List<TransactionDTO> transactionsDTO = new LinkedList<TransactionDTO>();
+        List<HistoryDTO> transactionsDTO = new LinkedList<HistoryDTO>();
 
-        for (Transaction transaction : transactionList)
+        for (History history : historyList)
         {
-            TransactionDTO transactionDTO = transformTransactionToTransactionDTO(transaction);
-            transactionsDTO.add(transactionDTO);
+            HistoryDTO historyDTO = transformHistoryToHistoryDTO(history);
+            transactionsDTO.add(historyDTO);
         }
 
         return transactionsDTO;
