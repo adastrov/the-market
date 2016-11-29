@@ -37,7 +37,7 @@ public class HistoryDAOImpl implements HistoryDAO {
 
         Connection connection = dataSource.createConnection();
 
-        String createHistoryQuery = "INSERT INTO tbl_history (history_user, history_product, history_productCount, history_productPrice, history_date) VALUES (?,?,?,?,?)";
+        String createHistoryQuery = "INSERT INTO tbl_history (user_id, product_id, product_count, product_price, history_date) VALUES (?,?,?,?,?)";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(createHistoryQuery);
@@ -71,7 +71,7 @@ public class HistoryDAOImpl implements HistoryDAO {
 
             while (resultSet.next()) {
 
-                ProductDTO productDTO = productService.findProductById(resultSet.getInt("history_product"));
+                ProductDTO productDTO = productService.findProductById(resultSet.getInt("product_id"));
                 Product product = Transformer.transformProductDTOToProduct(productDTO);
 
                 History history = new History();

@@ -3,7 +3,6 @@ package market.pavelpadalka.u.com.gitlab.holder;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.ResourceBundle;
 
 public class AppPropertiesHolder {
 

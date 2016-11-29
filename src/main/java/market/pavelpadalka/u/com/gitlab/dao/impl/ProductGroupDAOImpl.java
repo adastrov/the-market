@@ -45,9 +45,9 @@ public class ProductGroupDAOImpl implements ProductGroupDAO {
 
             if (resultSet.next()) {
                 productGroup = new ProductGroup();
-                productGroup.setId(resultSet.getInt("product_id"));
-                productGroup.setTitle(resultSet.getString("product_title"));
-                productGroup.setDescription(resultSet.getString("product_description"));
+                productGroup.setId(resultSet.getInt("product_group_id"));
+                productGroup.setTitle(resultSet.getString("product_group_title"));
+                productGroup.setDescription(resultSet.getString("product_group_description"));
             }
 
         } catch (SQLException e) {
