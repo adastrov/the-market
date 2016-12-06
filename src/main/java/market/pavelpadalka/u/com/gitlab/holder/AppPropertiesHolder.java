@@ -12,6 +12,8 @@ public class AppPropertiesHolder {
     private static String databaseURL;
     private static String databaseUser;
     private static String databasePassword;
+    private static String databaseStructureCreationScript;
+    private static String databaseDataInsertScript;
 
     private AppPropertiesHolder() {
     }
@@ -29,17 +31,19 @@ public class AppPropertiesHolder {
 
     private static void setConnectionSettings() {
 
-        FileInputStream fileInputStream;
-        Properties property = new Properties();
-
         try {
-            fileInputStream = new FileInputStream("src/main/resources/application.properties");
+            FileInputStream fileInputStream = new FileInputStream("src/main/resources/application.properties");
+
+            Properties property = new Properties();
             property.load(fileInputStream);
 
             driverName       = property.getProperty("db.driver");
             databaseURL      = property.getProperty("db.url");
             databaseUser     = property.getProperty("db.user");
             databasePassword = property.getProperty("db.password");
+
+            databaseStructureCreationScript = property.getProperty("db.databaseStructureCreationScript");
+            databaseDataInsertScript        = property.getProperty("db.databaseDataInsertScript");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -63,6 +67,11 @@ public class AppPropertiesHolder {
         return databasePassword;
     }
 
+    public String getDatabaseStructureCreationScript() {
+        return databaseStructureCreationScript;
+    }
 
-
+    public String getDatabaseDataInsertScript() {
+        return databaseDataInsertScript;
+    }
 }
