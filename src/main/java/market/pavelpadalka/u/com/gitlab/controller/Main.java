@@ -1,12 +1,10 @@
 package market.pavelpadalka.u.com.gitlab.controller;
 
-import market.pavelpadalka.u.com.gitlab.ApplicationContext;
-import market.pavelpadalka.u.com.gitlab.dto.ProductDTO;
+import market.pavelpadalka.u.com.gitlab.helper.ApplicationContext;
 import market.pavelpadalka.u.com.gitlab.service.api.ProductService;
 import market.pavelpadalka.u.com.gitlab.service.api.UserService;
 import market.pavelpadalka.u.com.gitlab.service.impl.ProductServiceImpl;
 import market.pavelpadalka.u.com.gitlab.service.impl.UserServiceImpl;
-import market.pavelpadalka.u.com.gitlab.dto.UserDTO;
 
 public class Main {
 

@@ -1,4 +1,4 @@
-package market.pavelpadalka.u.com.gitlab;
+package market.pavelpadalka.u.com.gitlab.helper;
 
 import market.pavelpadalka.u.com.gitlab.datasource.DataSource;
 import market.pavelpadalka.u.com.gitlab.holder.AppPropertiesHolder;
@@ -56,6 +56,7 @@ public class ApplicationContext {
 
                 String s;
                 while ((s = in.readLine()) != null) {
+
                     sb.append(s);
                     sb.append("\n");
 

@@ -3,14 +3,12 @@ CREATE TABLE market.tbl_products (
   product_title NVARCHAR(100) NOT NULL,
   product_description NVARCHAR(500),
   product_price int(14),
-  product_count int(14)
-);
+  product_count int(14));
 
 CREATE TABLE market.tbl_product_groups (
   product_group_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   product_group_title NVARCHAR(100) NOT NULL,
-  product_group_description NVARCHAR(500)
-);
+  product_group_description NVARCHAR(500));
 
 CREATE INDEX INDEX_tbl_product_groups ON market.tbl_product_groups(product_group_title);
 
