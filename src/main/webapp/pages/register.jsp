@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page contentType="text/html" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
@@ -16,7 +16,7 @@
   <link href="<c:url value="/pages/css/bootstrap.css" />" rel="stylesheet">
 
   <!-- Custom styles for this template -->
-  <link href="<c:url value="/pages/css/signin.css" />" rel="stylesheet">
+  <link href="<c:url value="/pages/css/sign-in.css" />" rel="stylesheet">
 
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
@@ -28,9 +28,15 @@
 <body>
 
 <div class="navbar">
-  <sec:authorize access="!isAuthenticated()">
+
+<c:choose>
+  <c:when test="${not empty user.getLogin()}">
     <a class="btn btn-success pull-right" href="<c:url value="/login" />" role="button">Войти</a>
-  </sec:authorize>
+  </c:when>
+</c:choose>
+
+  <h2>${user.getLogin()}</h2>
+
 </div>
 
 <div class="container" style="width: 300px;">
@@ -43,7 +49,7 @@
   </c:if>
 
   <form:form action="save" method="post" modelAttribute="user">
-    <h2 class="form-signin-heading">Регистрация</h2>
+    <h2 class="form-sign-in-heading">Регистрация</h2>
     <input type="text" class="form-control" name="username" placeholder="Эл. адрес или номер моб. телефона" required autofocus value="">
     <br>
     <input type="password" class="form-control" name="password" placeholder="Новый пароль" required value="">

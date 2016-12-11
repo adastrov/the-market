@@ -1,4 +1,6 @@
-package market.pavelpadalka.u.com.gitlab.servlet;
+package market.pavelpadalka.u.com.gitlab.controller;
+
+import market.pavelpadalka.u.com.gitlab.entity.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -7,18 +9,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet({"/login"})
-public class LoginActionServlet extends HttpServlet {
+@WebServlet({"/index"})
+public class IndexActionServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-       // super.doGet(req, resp);
 
-        System.out.println("ddddd");
+        User user = new User();
+        user.setLogin("pauladastrov");
 
-        req.setAttribute("username", null);
+        req.setAttribute("user", null);
 
-        req.getRequestDispatcher("pages/login.jsp").include(req, resp);
-
+        req.getRequestDispatcher("pages/index.jsp").include(req, resp);
     }
 }
