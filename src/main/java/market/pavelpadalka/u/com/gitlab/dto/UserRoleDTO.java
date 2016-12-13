@@ -1,6 +1,6 @@
-package market.pavelpadalka.u.com.gitlab.entity;
+package market.pavelpadalka.u.com.gitlab.dto;
 
-public class UserRole {
+public class UserRoleDTO {
 
     private Integer id;
     private String name;
@@ -20,5 +20,6 @@ public class UserRole {
     public void setName(String name) {
         this.name = name;
     }
+
 
 }

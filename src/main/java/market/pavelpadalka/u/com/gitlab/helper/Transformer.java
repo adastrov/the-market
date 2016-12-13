@@ -1,13 +1,7 @@
 package market.pavelpadalka.u.com.gitlab.helper;
 
-import market.pavelpadalka.u.com.gitlab.dto.ProductDTO;
-import market.pavelpadalka.u.com.gitlab.dto.ProductGroupDTO;
-import market.pavelpadalka.u.com.gitlab.entity.ProductGroup;
-import market.pavelpadalka.u.com.gitlab.dto.HistoryDTO;
-import market.pavelpadalka.u.com.gitlab.dto.UserDTO;
-import market.pavelpadalka.u.com.gitlab.entity.Product;
-import market.pavelpadalka.u.com.gitlab.entity.History;
-import market.pavelpadalka.u.com.gitlab.entity.User;
+import market.pavelpadalka.u.com.gitlab.dto.*;
+import market.pavelpadalka.u.com.gitlab.entity.*;
 import org.dozer.DozerBeanMapperSingletonWrapper;
 import org.dozer.Mapper;
 
@@ -22,6 +16,22 @@ public class Transformer {
         Mapper mapper = DozerBeanMapperSingletonWrapper.getInstance();
 
         return mapper.map(user, UserDTO.class);
+
+    }
+
+    public static UserRoleDTO transformUserRoleToUserRoleDTO(UserRole userRole) {
+
+        Mapper mapper = DozerBeanMapperSingletonWrapper.getInstance();
+
+        return mapper.map(userRole, UserRoleDTO.class);
+
+    }
+
+    public static UserRole transformUserRoleDTOToUserRole(UserRoleDTO userRoleDTO) {
+
+        Mapper mapper = DozerBeanMapperSingletonWrapper.getInstance();
+
+        return mapper.map(userRoleDTO, UserRole.class);
 
     }
 

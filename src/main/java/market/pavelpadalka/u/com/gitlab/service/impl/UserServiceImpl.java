@@ -7,6 +7,9 @@ import market.pavelpadalka.u.com.gitlab.entity.User;
 import market.pavelpadalka.u.com.gitlab.helper.Transformer;
 import market.pavelpadalka.u.com.gitlab.service.api.UserService;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class UserServiceImpl implements UserService {
 
     private static volatile UserService instance;
@@ -47,6 +50,20 @@ public class UserServiceImpl implements UserService {
         }
 
         return userResDTO;
+
+    }
+
+    public List<UserDTO> findAll() {
+
+        List<UserDTO> userResDTOList = new LinkedList<UserDTO>();
+
+        List<User> userList = userDAO.findAll();
+
+        for(User user : userList) {
+            userResDTOList.add(Transformer.transformUserToUserDTO(user));
+        }
+
+        return userResDTOList;
 
     }
 

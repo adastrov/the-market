@@ -7,6 +7,9 @@ import market.pavelpadalka.u.com.gitlab.entity.Product;
 import market.pavelpadalka.u.com.gitlab.helper.Transformer;
 import market.pavelpadalka.u.com.gitlab.service.api.ProductService;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class ProductServiceImpl implements ProductService {
 
     private static volatile ProductService instance;
@@ -23,6 +26,34 @@ public class ProductServiceImpl implements ProductService {
             }
         }
         return instance;
+    }
+
+    public List<ProductDTO> findAll() {
+
+        List<ProductDTO> productResDTOList = new LinkedList<ProductDTO>();
+
+        List<Product> productList = productDAO.findAll();
+
+        for(Product product : productList) {
+            productResDTOList.add(Transformer.transformProductToProductDTO(product));
+        }
+
+        return productResDTOList;
+
+    }
+
+    public List<ProductDTO> findAllAvailable() {
+
+        List<ProductDTO> productResDTOList = new LinkedList<ProductDTO>();
+
+        List<Product> productList = productDAO.findAllAvailable();
+
+        for(Product product : productList) {
+            productResDTOList.add(Transformer.transformProductToProductDTO(product));
+        }
+
+        return productResDTOList;
+
     }
 
     public ProductDTO findProductById(Integer id) {

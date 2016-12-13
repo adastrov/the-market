@@ -1,7 +1,7 @@
 package market.pavelpadalka.u.com.gitlab.holder;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class AppPropertiesHolder {
@@ -32,10 +32,12 @@ public class AppPropertiesHolder {
     private static void setConnectionSettings() {
 
         try {
-            FileInputStream fileInputStream = new FileInputStream("src/main/resources/application.properties");
+
+            InputStream inputStream = Thread.currentThread().getContextClassLoader()
+                    .getResourceAsStream("application.properties");
 
             Properties property = new Properties();
-            property.load(fileInputStream);
+            property.load(inputStream);
 
             driverName       = property.getProperty("db.driver");
             databaseURL      = property.getProperty("db.url");

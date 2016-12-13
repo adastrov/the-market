@@ -4,6 +4,7 @@ import market.pavelpadalka.u.com.gitlab.datasource.DataSource;
 import market.pavelpadalka.u.com.gitlab.holder.AppPropertiesHolder;
 
 import java.io.*;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -50,11 +51,15 @@ public class ApplicationContext {
 
         try {
 
-            BufferedReader in = new BufferedReader(new FileReader(fileName));
+            InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+
 
             try {
 
                 String s;
+
                 while ((s = in.readLine()) != null) {
 
                     sb.append(s);

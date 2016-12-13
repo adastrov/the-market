@@ -18,10 +18,12 @@ INSERT INTO market.tbl_roles (role_name, role_description)
 VALUES
   ('admin', 'Administrator'),
   ('user',  'User'),
+  ('guest', 'Guest'),
   ('wife',  'It is someone, who can interrupt all this shit');
 
 INSERT INTO market.tbl_users (user_login, user_password, user_email, user_first_name, user_last_name, user_birthday, user_role_id)
 VALUES
   ('admin', '123', 'admin@email.domain', 'Ad', "Min", "19920909", "1"),
   ('user',  '123', 'user@email.domain',  'U', "Ser", "19920909", "2"),
-  ('wife',  'wife', 'wife@email.domain',  'Y', "Just wife", "19920909", "3");
+  ('guest',  '123', 'guest@email.domain',  'G', "Uest", "19920909", "3"),
+  ('wife',  'wife', 'wife@email.domain',  'Y', "Just wife", "19920909", "4");

@@ -60,6 +60,74 @@ public class ProductDAOImpl implements ProductDAO {
 
     }
 
+    public List<Product> findAllAvailable() {
+
+        Connection connection = dataSource.createConnection();
+
+        List<Product> productList = new LinkedList<Product>();
+
+        String findAllQuery = "SELECT * FROM tbl_products WHERE product_count > 0";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(findAllQuery);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+
+                Product product = new Product();
+
+                product.setId(resultSet.getInt("product_id"));
+                product.setTitle(resultSet.getString("product_title"));
+                product.setDescription(resultSet.getString("product_description"));
+                product.setPrice(resultSet.getDouble("product_price"));
+                product.setCount(resultSet.getInt("product_count"));
+
+                productList.add(product);
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return productList;
+
+    }
+
+    public List<Product> findAll() {
+
+        Connection connection = dataSource.createConnection();
+
+        List<Product> productList = new LinkedList<Product>();
+
+        String findAllQuery = "SELECT * FROM tbl_products";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(findAllQuery);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+
+                Product product = new Product();
+
+                product.setId(resultSet.getInt("product_id"));
+                product.setTitle(resultSet.getString("product_title"));
+                product.setDescription(resultSet.getString("product_description"));
+                product.setPrice(resultSet.getDouble("product_price"));
+                product.setCount(resultSet.getInt("product_count"));
+
+                productList.add(product);
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return productList;
+
+    }
+
     public Product create(Product product) {
 
         Connection connection = dataSource.createConnection();

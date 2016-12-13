@@ -1,5 +1,7 @@
 package market.pavelpadalka.u.com.gitlab.entity;
 
+import market.pavelpadalka.u.com.gitlab.dto.UserRoleDTO;
+
 import java.sql.Date;
 import java.util.List;
 
@@ -13,7 +15,7 @@ public class User {
     private String   password;
     private UserSex  sex;
     private String   email;
-    private UserRole role;
+    private UserRoleDTO role;
     private List<History> histories;
 
     public Integer getId() {
@@ -80,11 +82,11 @@ public class User {
         this.email = email;
     }
 
-    public UserRole getRole() {
+    public UserRoleDTO getRole() {
         return role;
     }
 
-    public void setRole(UserRole role) {
+    public void setRole(UserRoleDTO role) {
         this.role = role;
     }
 

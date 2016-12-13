@@ -19,13 +19,13 @@
 <div class="navbar">
 
 <c:choose>
-    <c:when test="${empty user}">
+    <c:when test="${empty sessionScope.get('user')}">
         <a class="btn btn-primary regis" href="<c:url value="/register" />" role="button">Регистрация</a>
         <a class="btn btn-success" href="<c:url value="/login" />" role="button">Войти</a>
     </c:when>
     <c:otherwise>
         <div>
-            <span class="userName">Ваш логин: <span class="boldText"> "${user.getLogin()}" </span></span>
+            <span class="userName">Ваш логин: <span class="boldText"> "${sessionScope.get('user').getLogin()}" </span></span>
             <a class="btn btn-danger pull-right" href="<c:url value="/logout" />" role="button">Выйти</a>
         </div>
     </c:otherwise>
@@ -33,13 +33,18 @@
 
 </div>
 
-<div class="container">
-    <div class="jumbotron" style="margin-top: 20px;">
+<div class="container-fluid">
+    <div class="jumbotron" style="margin-top: 25px;">
+
         <h2>Интернет-магазин</h2>
         <h1>Market</h1> <br>
+
         <p class="lead">
             Market – продаём товар, дарим – настроение
         </p>
+
+        <a class="btn btn-lg btn-primary regis" href="<c:url value="/product-list" />" role="button">Список товаров</a>
+
     </div>
 </div>
 

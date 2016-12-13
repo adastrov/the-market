@@ -1,4 +1,4 @@
-package market.pavelpadalka.u.com.gitlab.listener;
+package market.pavelpadalka.u.com.gitlab.controller.listener;
 
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionEvent;

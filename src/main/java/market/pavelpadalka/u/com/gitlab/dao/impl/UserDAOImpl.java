@@ -3,13 +3,18 @@ package market.pavelpadalka.u.com.gitlab.dao.impl;
 import market.pavelpadalka.u.com.gitlab.dao.api.UserDAO;
 import market.pavelpadalka.u.com.gitlab.datasource.DataSource;
 import market.pavelpadalka.u.com.gitlab.entity.User;
+import market.pavelpadalka.u.com.gitlab.service.api.UserRoleService;
+import market.pavelpadalka.u.com.gitlab.service.impl.UserRoleServiceImpl;
 
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class UserDAOImpl implements UserDAO {
 
-    private static volatile UserDAO instance;
-    private static volatile DataSource dataSource;
+    private static volatile UserDAO     instance;
+    private static volatile DataSource  dataSource;
+    private static UserRoleService      userRoleService = UserRoleServiceImpl.getInstance();
 
     private UserDAOImpl() {
     }
@@ -41,18 +46,13 @@ public class UserDAOImpl implements UserDAO {
             if (resultSet.next()) {
                 user = new User();
 
-                user.setId(resultSet.getInt("user_id"));
-                user.setLogin(resultSet.getString("user_login"));
-                user.setPassword(resultSet.getString("user_password"));
-                user.setEmail(resultSet.getString("user_email"));
+                setDefaultUserFields(user, resultSet);
 
-                user.setFirstName(resultSet.getString("user_first_name"));
-                user.setLastName(resultSet.getString("user_last_name"));
-                user.setBirthday(resultSet.getDate("user_birthday"));
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
+            user = null;
         }
 
         return user;
@@ -75,15 +75,39 @@ public class UserDAOImpl implements UserDAO {
             if (resultSet.next()) {
 
                 user = new User();
-                user.setId(resultSet.getInt("user_id"));
 
-                user.setLogin(resultSet.getString("user_login"));
-                user.setPassword(resultSet.getString("user_password"));
-                user.setEmail(resultSet.getString("user_email"));
+                setDefaultUserFields(user, resultSet);
 
-                user.setFirstName(resultSet.getString("user_first_name"));
-                user.setLastName(resultSet.getString("user_last_name"));
-                user.setBirthday(resultSet.getDate("user_birthday"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            user = null;
+        }
+
+        return user;
+
+    }
+
+    public List<User> findAll() {
+
+        Connection connection = dataSource.createConnection();
+
+        List<User> userList = new LinkedList<User>();
+
+        String findAllQuery = "SELECT * FROM tbl_users";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(findAllQuery);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+
+                User user = new User();
+
+                setDefaultUserFields(user, resultSet);
+
+                userList.add(user);
 
             }
 
@@ -91,7 +115,7 @@ public class UserDAOImpl implements UserDAO {
             e.printStackTrace();
         }
 
-        return user;
+        return userList;
 
     }
 
@@ -99,7 +123,7 @@ public class UserDAOImpl implements UserDAO {
 
         Connection connection = dataSource.createConnection();
 
-        String createUserQuery = "INSERT INTO tbl_users (user_login, user_password, user_email, user_firstName, user_lastName, user_birthday) VALUES (?,?,?,?,?,?)";
+        String createUserQuery = "INSERT INTO tbl_users (user_login, user_password, user_email, user_first_name, user_last_name, user_birthday, user_role_id) VALUES (?,?,?,?,?,?,?)";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(createUserQuery);
@@ -109,10 +133,12 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.setString(4, user.getFirstName());
             preparedStatement.setString(5, user.getLastName());
             preparedStatement.setDate(6,   user.getBirthday());
+            preparedStatement.setInt(7,   user.getRole().getId());
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            user = null;
         }
 
         return user;
@@ -123,7 +149,7 @@ public class UserDAOImpl implements UserDAO {
 
         Connection connection = dataSource.createConnection();
 
-        String updateUserQuery = "UPDATE tbl_users SET user_login = ?, user_password = ?, user_email = ?, user_first_name = ?, user_last_name = ?, user_birthday = ? WHERE user_id = ?";
+        String updateUserQuery = "UPDATE tbl_users SET user_login = ?, user_password = ?, user_email = ?, user_first_name = ?, user_last_name = ?, user_birthday = ?, user_role_id = ? WHERE user_id = ?";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(updateUserQuery);
@@ -133,10 +159,12 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.setString(4, user.getFirstName());
             preparedStatement.setString(5, user.getLastName());
             preparedStatement.setDate(6,   user.getBirthday());
+            preparedStatement.setInt(7,    user.getRole().getId());
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            user = null;
         }
 
         return user;
@@ -160,6 +188,21 @@ public class UserDAOImpl implements UserDAO {
         }
 
         return resultCount > 0;
+
+    }
+
+    private void setDefaultUserFields(User user, ResultSet resultSet) throws SQLException {
+
+        user.setId(resultSet.getInt("user_id"));
+
+        user.setLogin(resultSet.getString("user_login"));
+        user.setPassword(resultSet.getString("user_password"));
+        user.setEmail(resultSet.getString("user_email"));
+
+        user.setFirstName(resultSet.getString("user_first_name"));
+        user.setLastName(resultSet.getString("user_last_name"));
+        user.setBirthday(resultSet.getDate("user_birthday"));
+        user.setRole(userRoleService.findByRoleId(resultSet.getInt("user_role_id")));
 
     }
 

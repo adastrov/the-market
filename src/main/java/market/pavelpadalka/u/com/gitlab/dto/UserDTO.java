@@ -14,9 +14,9 @@ public class UserDTO {
     private Date     birthday;
     private String   login;
     private String   password;
-    private UserSex sex;
+    private UserSex  sex;
     private String   email;
-    private UserRole role;
+    private UserRoleDTO role;
     private List<HistoryDTO> historyDTOList;
 
 
@@ -84,11 +84,11 @@ public class UserDTO {
         this.email = email;
     }
 
-    public UserRole getRole() {
+    public UserRoleDTO getRole() {
         return role;
     }
 
-    public void setRole(UserRole role) {
+    public void setRole(UserRoleDTO role) {
         this.role = role;
     }
 
