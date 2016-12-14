@@ -1,4 +1,5 @@
-package market.pavelpadalka.u.com.gitlab.controller.admin.user;
+package market.pavelpadalka.u.com.gitlab.controller.administration.user;
+
 
 import market.pavelpadalka.u.com.gitlab.dto.UserDTO;
 import market.pavelpadalka.u.com.gitlab.dto.UserRoleDTO;
@@ -17,13 +18,22 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Date;
 
-@WebServlet({"/add-user"})
-public class AddActionServlet extends HttpServlet {
+@WebServlet({"/user-edit"})
+public class EditActionServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        req.getRequestDispatcher("pages/users-list.jsp").include(req, resp);
+        UserService userService = UserServiceImpl.getInstance();
+        HttpSession session     = req.getSession();
+
+        String  id = req.getParameter("id");
+
+        UserDTO userDTO = userService.findById(Integer.valueOf(id));
+
+        session.setAttribute("userForEditing", userDTO);
+
+        req.getRequestDispatcher("pages/admin/user-edit.jsp").include(req, resp);
 
     }
 
@@ -35,32 +45,30 @@ public class AddActionServlet extends HttpServlet {
 
         HttpSession session = req.getSession();
 
-        String  login           = req.getParameter("username");
-        String  email           = req.getParameter("email");
-        String  password        = req.getParameter("password");
-        String  role            = req.getParameter("role");
-        String  firstName       = req.getParameter("firstName");
-        String  lastName        = req.getParameter("lastName");
-        String  birthday        = req.getParameter("birthday");
-        String  sex             = req.getParameter("sex");
+        String  id        = req.getParameter("id");
+        String  login     = req.getParameter("username");
+        String  password  = req.getParameter("password");
+        String  email     = req.getParameter("email");
+        String  role      = req.getParameter("role");
+        String  firstName = req.getParameter("firstName");
+        String  lastName  = req.getParameter("lastName");
+        String  birthday  = req.getParameter("birthday");
+        String  sex       = req.getParameter("sex");
         String  error;
 
-        UserDTO user = userService.findByLoginAndEmail(login, email);
+        UserDTO userDTO = userService.findById(Integer.valueOf(id));
 
-        if (user!=null) {
-            error = "This user has already been registered!";
+        if (userDTO==null) {
+            error = "Internal server error!";
 
-            session.setAttribute("user",  null);
+            System.out.println("и тут крутой лог...");
+
             session.setAttribute("error", error);
-
             req.getRequestDispatcher("pages/users-list.jsp").include(req, resp);
             return;
-
         }
 
         UserRoleDTO userRole = userRoleService.findByName(role);
-
-        UserDTO userDTO = new UserDTO();
 
         userDTO.setLogin(login);
         userDTO.setPassword(password);
@@ -71,20 +79,14 @@ public class AddActionServlet extends HttpServlet {
         userDTO.setEmail(email);
         userDTO.setRole(userRole);
 
-        UserDTO createdUser = userService.create(userDTO);
+        UserDTO updatedUser = userService.update(userDTO);
 
-        if (createdUser==null) {
-            error = "User hasn't been registered! Internal error";
-
-            session.setAttribute("user",  null);
+        if (updatedUser==null) {
+            error = "User hasn't been updated! Internal error";
             session.setAttribute("error", error);
-
-            req.getRequestDispatcher("pages/users-list.jsp").include(req, resp);
-            return;
         }
 
-        req.getRequestDispatcher("pages/admin/users-list.jsp").include(req, resp);
+        resp.sendRedirect("/users-list");
 
     }
-
 }

@@ -7,6 +7,9 @@ import market.pavelpadalka.u.com.gitlab.entity.UserRole;
 import market.pavelpadalka.u.com.gitlab.helper.Transformer;
 import market.pavelpadalka.u.com.gitlab.service.api.UserRoleService;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class UserRoleServiceImpl implements UserRoleService{
 
     private static volatile UserRoleService instance;
@@ -48,6 +51,20 @@ public class UserRoleServiceImpl implements UserRoleService{
         }
 
         return userRoleResDTO;
+
+    }
+
+    public List<UserRoleDTO> findAll() {
+
+        List<UserRoleDTO> userRoleResDTOList = new LinkedList<UserRoleDTO>();
+
+        List<UserRole> userRoleList = userRoleDAO.findAll();
+
+        for(UserRole userRole : userRoleList) {
+            userRoleResDTOList.add(Transformer.transformUserRoleToUserRoleDTO(userRole));
+        }
+
+        return userRoleResDTOList;
 
     }
 

@@ -69,11 +69,17 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
-    public boolean createProduct(ProductDTO productDTO) {
+    public ProductDTO create(ProductDTO productDTO) {
 
-        Product createdProduct = productDAO.create(Transformer.transformProductDTOToProduct(productDTO));
+        ProductDTO resProductDto = null;
+        Product product = Transformer.transformProductDTOToProduct(productDTO);
+        Product createdProduct = productDAO.create(product);
 
-        return createdProduct != null;
+        if (createdProduct != null) {
+            resProductDto = Transformer.transformProductToProductDTO(createdProduct);
+        }
+
+        return resProductDto;
 
     }
 

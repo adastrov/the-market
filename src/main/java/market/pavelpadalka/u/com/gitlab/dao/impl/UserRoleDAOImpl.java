@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
 public class UserRoleDAOImpl implements UserRoleDAO {
 
@@ -76,6 +78,7 @@ public class UserRoleDAOImpl implements UserRoleDAO {
 
                 userRole.setId(resultSet.getInt("role_id"));
                 userRole.setName(resultSet.getString("role_name"));
+                userRole.setDescription(resultSet.getString("role_description"));
             }
 
         } catch (SQLException e) {
@@ -87,15 +90,48 @@ public class UserRoleDAOImpl implements UserRoleDAO {
 
     }
 
+    public List<UserRole> findAll() {
+
+        Connection connection = dataSource.createConnection();
+
+        List<UserRole> userRoleList = new LinkedList<UserRole>();
+
+        String findAllQuery = "SELECT * FROM tbl_roles";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(findAllQuery);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+
+                UserRole userRole = new UserRole();
+
+                userRole.setId(resultSet.getInt("role_id"));
+                userRole.setName(resultSet.getString("role_name"));
+                userRole.setDescription(resultSet.getString("role_description"));
+
+                userRoleList.add(userRole);
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return userRoleList;
+
+    }
+
     public UserRole create(UserRole userRole) {
 
         Connection connection = dataSource.createConnection();
 
-        String createUserRoleQuery = "INSERT INTO tbl_roles (role_name) VALUES (?)";
+        String createUserRoleQuery = "INSERT INTO tbl_roles (role_name, role_description) VALUES (?,?)";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(createUserRoleQuery);
             preparedStatement.setString(1, userRole.getName());
+            preparedStatement.setString(2, userRole.getDescription());
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -131,11 +167,12 @@ public class UserRoleDAOImpl implements UserRoleDAO {
 
         Connection connection = dataSource.createConnection();
 
-        String createUserRoleQuery = "UPDATE tbl_roles SET role_namw = ? WHERE role_id = ?";
+        String createUserRoleQuery = "UPDATE tbl_roles SET role_name = ?, role_description = ?  WHERE role_id = ?";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(createUserRoleQuery);
             preparedStatement.setString(1, userRole.getName());
+            preparedStatement.setString(2, userRole.getDescription());
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

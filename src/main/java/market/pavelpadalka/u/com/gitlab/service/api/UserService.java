@@ -10,6 +10,8 @@ public interface UserService {
 
     UserDTO findByLoginAndEmail(String login, String email);
 
+    UserDTO findById(Integer id);
+
     List<UserDTO> findAll();
 
     UserDTO create(UserDTO user);

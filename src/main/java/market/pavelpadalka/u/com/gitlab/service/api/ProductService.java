@@ -12,7 +12,7 @@ public interface ProductService {
 
     List<ProductDTO> findAllAvailable();
 
-    boolean createProduct(ProductDTO product);
+    ProductDTO create(ProductDTO product);
 
     boolean updateProduct(ProductDTO product);
 

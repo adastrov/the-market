@@ -1,4 +1,4 @@
-package market.pavelpadalka.u.com.gitlab.controller.admin.user;
+package market.pavelpadalka.u.com.gitlab.controller.main;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -7,12 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet({"/user-edit"})
-public class EditActionServlet extends HttpServlet {
+@WebServlet({"/index"})
+public class IndexActionServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        req.getRequestDispatcher("pages/admin/user-edit.jsp").include(req, resp);
+        req.getRequestDispatcher("pages/index.jsp").include(req, resp);
     }
 }

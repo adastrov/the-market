@@ -34,7 +34,7 @@
 
 </div>
 
-<form name="registerForm" action="<c:url value='/add-user' />" method='POST'>
+<form name="registerForm" action="<c:url value='/user-add' />" method='POST'>
 <div class="container-fluid">
 
     <h2>Добавить пользователя:</h2>
@@ -53,7 +53,7 @@
         <th>Last name</th>
         <th>Birthday</th>
         <th>Sex</th>
-        <th>Action</th>
+        <th></th>
     </tr>
     </thead>
 
@@ -65,9 +65,10 @@
 
         <select size="1" name="role">
             <option disabled>Укажите роль</option>
-            <option selected value="user">Пользователь</option>
-            <option value="admin">Администратор</option>
-            <option value="guest">Гость</option>
+
+            <c:forEach items="${sessionScope.roles}" var="role">
+                <option selected value=${role.getName()}>${role.getDescription()}</option>
+            </c:forEach>
         </select>
 
     </td>
@@ -117,15 +118,15 @@
         <th>First name</th>
         <th>Last name</th>
         <th>Birthday</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        <th>Sex</th>
+        <th></th>
+        <th></th>
     </tr>
 </thead>
 
 <c:forEach items="${sessionScope.users}" var="user">
 
     <tbody>
-
     <th scope="row">${user.getId()}</th>
         <td>${user.getLogin()}</td>
         <td>${user.getEmail()}</td>
@@ -133,6 +134,7 @@
         <td>${user.getFirstName()}</td>
         <td>${user.getLastName()}</td>
         <td>${user.getBirthday()}</td>
+        <td>${user.getSex().toString()}</td>
         <td><a href="/user-edit?id=${user.getId()}">Изменить</a></td>
         <td><a href="/user-delete?id=${user.getId()}">Удалить</a></td>
     </tbody>

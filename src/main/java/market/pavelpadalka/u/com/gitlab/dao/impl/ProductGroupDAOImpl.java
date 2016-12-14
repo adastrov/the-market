@@ -90,6 +90,38 @@ public class ProductGroupDAOImpl implements ProductGroupDAO {
 
     }
 
+    public List<ProductGroup> findAll() {
+
+        Connection connection = dataSource.createConnection();
+
+        List<ProductGroup> productGroupList = new LinkedList<ProductGroup>();
+
+        String findAllQuery = "SELECT * FROM tbl_product_groups";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(findAllQuery);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+
+                ProductGroup productGroup = new ProductGroup();
+
+                productGroup.setId(resultSet.getInt("product_group_id"));
+                productGroup.setTitle(resultSet.getString("product_group_title"));
+                productGroup.setDescription(resultSet.getString("product_group_description"));
+
+                productGroupList.add(productGroup);
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return productGroupList;
+
+    }
+
     public ProductGroup create(ProductGroup productGroup) {
 
         Connection connection = dataSource.createConnection();

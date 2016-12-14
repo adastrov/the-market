@@ -11,6 +11,8 @@ public interface ProductGroupService {
 
     ProductGroupDTO findProductGroupById(Integer id);
 
+    List<ProductGroupDTO> findAll();
+
     boolean createProductGroup(ProductGroupDTO productGroupDTO);
 
     boolean updateProductGroup(ProductGroupDTO productGroupDTO);

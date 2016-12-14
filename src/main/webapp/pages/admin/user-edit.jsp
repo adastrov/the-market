@@ -34,27 +34,79 @@
 
 </div>
 
-<div class="container">
-    <div class="jumbotron" style="margin-top: 20px;">
+<form name="registerForm" action="<c:url value='/user-edit' />" method='POST'>
+    <div class="container-fluid">
 
-        <ul>
-            <li>Список пользователей
-        <ol>
-            <c:forEach items="${sessionScope.users}" var="user">
-                <li>
-                        ${user.getLogin()} ; ${user.getEmail()}} (<a href="/edit-user?id=${user.getId()}">Изменить</a>)   (<a href="/delete-user?id=${user.getId()}">Удалить</a>)
-                </li>
+        <h2>Изменить данные пользователя:</h2>
 
+        <table class="table table-hover">
 
-            </c:forEach>
-        </ol>
-            </li>
-        </ul>
+            <td>
+
+                <thead>
+                <tr>
+                    <th>Login</th>
+                    <th>Pass</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Birthday</th>
+                    <th>Sex</th>
+                    <th></th>
+                </tr>
+                </thead>
+
+            <td><input type="hidden"   class="form-control" name="id" value="${sessionScope.userForEditing.getId()}"></td>
+            <td><input type="text"     class="form-control" name="username" placeholder="Логин" required autofocus value="${sessionScope.userForEditing.getLogin()}"></td>
+            <td><input type="password" class="form-control" name="password" placeholder="Пароль" required value="${sessionScope.userForEditing.getPassword()}"></td>
+            <td><input type="email"    class="form-control" name="email" placeholder="E-mail" required value="${sessionScope.userForEditing.getEmail()}"></td>
+
+            <td>
+
+                <select size="1" name="role">
+                    <option disabled>Укажите роль</option>
+
+                    <c:forEach items="${sessionScope.roles}" var="role">
+                        <option selected value=${role.getName()}>${role.getDescription()}</option>
+                    </c:forEach>
+                </select>
+
+            </td>
+
+            <td><input type="text" class="form-control" name="firstName" placeholder="Имя" required value="${sessionScope.userForEditing.getFirstName()}"></td>
+            <td><input type="text" class="form-control" name="lastName" placeholder="Фамилия" required value="${sessionScope.userForEditing.getLastName()}"></td>
+            <td><input type="date" class="form-control" name="birthday" placeholder="Дата рождения" required value=${sessionScope.userForEditing.getBirthday()}></td>
+
+            <td>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="sex" id="male" value="male" <c:if test="${sessionScope.get('sex') == null }">checked</c:if> <c:if test="${sessionScope.get('sex') == 'male' }">checked</c:if>>
+                        Мужской
+                    </label>
+                </div>
+
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="sex" id="female" value="female" <c:if test="${sessionScope.get('sex') == 'female' }">checked</c:if>>
+                        Женский
+                    </label>
+                </div>
+            </td>
+
+            <td><button class="btn btn-lg btn-primary btn-block" type="submit" value="Add">Изменить</button></td>
+
+            </tbody>
+
+        </table>
+
     </div>
-</div>
+
+</form>
 
 <footer>
     <p>© Pavel Padalka 2016</p>
 </footer>
+
 </body>
 </html>

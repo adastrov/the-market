@@ -1,4 +1,4 @@
-package market.pavelpadalka.u.com.gitlab.controller.admin.user;
+package market.pavelpadalka.u.com.gitlab.controller.autentif;
 
 import market.pavelpadalka.u.com.gitlab.dto.UserDTO;
 import market.pavelpadalka.u.com.gitlab.entity.User;

@@ -53,6 +53,20 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    public UserDTO findById(Integer id) {
+
+        UserDTO userResDTO = null;
+
+        User user = userDAO.findById(id);
+
+        if (user != null) {
+            userResDTO = Transformer.transformUserToUserDTO(user);
+        }
+
+        return userResDTO;
+
+    }
+
     public List<UserDTO> findAll() {
 
         List<UserDTO> userResDTOList = new LinkedList<UserDTO>();

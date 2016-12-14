@@ -56,6 +56,20 @@ public class ProductGroupServiceImpl implements ProductGroupService {
 
     }
 
+    public List<ProductGroupDTO> findAll() {
+
+        List<ProductGroupDTO> productGroupResDTOList = new LinkedList<ProductGroupDTO>();
+
+        List<ProductGroup> productGroupList = productGroupDAO.findAll();
+
+        for(ProductGroup productGroup : productGroupList) {
+            productGroupResDTOList.add(Transformer.transformProductGroupToProductGroupDTO(productGroup));
+        }
+
+        return productGroupResDTOList;
+
+    }
+
     public boolean createProductGroup(ProductGroupDTO productGroupDTO) {
 
         ProductGroup createdProductGroup = productGroupDAO.create(Transformer.transformProductGroupDTOToProductGroup(productGroupDTO));

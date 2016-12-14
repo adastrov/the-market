@@ -3,6 +3,7 @@ package market.pavelpadalka.u.com.gitlab.dao.impl;
 import market.pavelpadalka.u.com.gitlab.dao.api.UserDAO;
 import market.pavelpadalka.u.com.gitlab.datasource.DataSource;
 import market.pavelpadalka.u.com.gitlab.entity.User;
+import market.pavelpadalka.u.com.gitlab.entity.UserSex;
 import market.pavelpadalka.u.com.gitlab.service.api.UserRoleService;
 import market.pavelpadalka.u.com.gitlab.service.impl.UserRoleServiceImpl;
 
@@ -89,6 +90,34 @@ public class UserDAOImpl implements UserDAO {
 
     }
 
+    public User findById(Integer id) {
+
+        User user = null;
+        Connection connection = dataSource.createConnection();
+
+        String findByLoginAndPasswordQuery = "SELECT * FROM tbl_users WHERE user_id=?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(findByLoginAndPasswordQuery);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                user = new User();
+
+                setDefaultUserFields(user, resultSet);
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            user = null;
+        }
+
+        return user;
+
+    }
+
     public List<User> findAll() {
 
         Connection connection = dataSource.createConnection();
@@ -123,7 +152,7 @@ public class UserDAOImpl implements UserDAO {
 
         Connection connection = dataSource.createConnection();
 
-        String createUserQuery = "INSERT INTO tbl_users (user_login, user_password, user_email, user_first_name, user_last_name, user_birthday, user_role_id) VALUES (?,?,?,?,?,?,?)";
+        String createUserQuery = "INSERT INTO tbl_users (user_login, user_password, user_email, user_first_name, user_last_name, user_birthday, user_sex, user_role_id) VALUES (?,?,?,?,?,?,?,?)";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(createUserQuery);
@@ -133,7 +162,8 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.setString(4, user.getFirstName());
             preparedStatement.setString(5, user.getLastName());
             preparedStatement.setDate(6,   user.getBirthday());
-            preparedStatement.setInt(7,   user.getRole().getId());
+            preparedStatement.setString(7, user.getSex().toString());
+            preparedStatement.setInt(8,   user.getRole().getId());
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -149,7 +179,7 @@ public class UserDAOImpl implements UserDAO {
 
         Connection connection = dataSource.createConnection();
 
-        String updateUserQuery = "UPDATE tbl_users SET user_login = ?, user_password = ?, user_email = ?, user_first_name = ?, user_last_name = ?, user_birthday = ?, user_role_id = ? WHERE user_id = ?";
+        String updateUserQuery = "UPDATE tbl_users SET user_login = ?, user_password = ?, user_email = ?, user_first_name = ?, user_last_name = ?, user_birthday = ?, user_sex = ?, user_role_id = ? WHERE user_id = ?";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(updateUserQuery);
@@ -159,7 +189,9 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.setString(4, user.getFirstName());
             preparedStatement.setString(5, user.getLastName());
             preparedStatement.setDate(6,   user.getBirthday());
-            preparedStatement.setInt(7,    user.getRole().getId());
+            preparedStatement.setString(7, user.getSex().toString());
+            preparedStatement.setInt(8,    user.getRole().getId());
+            preparedStatement.setInt(9,    user.getId());
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -202,6 +234,9 @@ public class UserDAOImpl implements UserDAO {
         user.setFirstName(resultSet.getString("user_first_name"));
         user.setLastName(resultSet.getString("user_last_name"));
         user.setBirthday(resultSet.getDate("user_birthday"));
+
+        user.setSex(resultSet.getString("user_sex").toLowerCase().equals("male") ? UserSex.MALE : UserSex.FEMALE);
+
         user.setRole(userRoleService.findByRoleId(resultSet.getInt("user_role_id")));
 
     }

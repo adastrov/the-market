@@ -28,6 +28,7 @@ CREATE TABLE market.tbl_users (
   user_first_name NVARCHAR(100) NOT NULL,
   user_last_name NVARCHAR(100) NOT NULL,
   user_birthday TIMESTAMP (6) NOT NULL,
+  user_sex NVARCHAR(100) NOT NULL,
   user_role_id int (14) NOT NULL
 );
 

@@ -13,5 +13,6 @@ public interface ProductGroupDAO {
     boolean      delete(Integer id);
 
     List<Product> findProducts(Integer productGroupId);
+    List<ProductGroup> findAll();
 
 }
