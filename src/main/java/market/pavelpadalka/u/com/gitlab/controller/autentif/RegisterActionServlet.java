@@ -117,6 +117,7 @@ public class RegisterActionServlet extends HttpServlet {
         }
 
         session.setAttribute("user",  createdUser);
+        session.setAttribute("currentUserAdmin", user.getRole().getName().equals(UserRoleEnum.ADMIN.toString().toLowerCase()));
         session.setAttribute("error", null);
 
         session.setAttribute("firstName", null);

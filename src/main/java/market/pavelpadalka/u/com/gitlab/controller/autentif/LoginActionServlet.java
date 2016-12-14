@@ -1,7 +1,7 @@
 package market.pavelpadalka.u.com.gitlab.controller.autentif;
 
 import market.pavelpadalka.u.com.gitlab.dto.UserDTO;
-import market.pavelpadalka.u.com.gitlab.entity.User;
+import market.pavelpadalka.u.com.gitlab.entity.UserRoleEnum;
 import market.pavelpadalka.u.com.gitlab.service.api.UserService;
 import market.pavelpadalka.u.com.gitlab.service.impl.UserServiceImpl;
 
@@ -38,6 +38,7 @@ public class LoginActionServlet extends HttpServlet {
         session.setAttribute("error", user==null ? null : "Wrong username or password!");
 
         if (user!=null) {
+            session.setAttribute("currentUserAdmin", user.getRole().getName().equals(UserRoleEnum.ADMIN.toString().toLowerCase()));
             req.getRequestDispatcher("pages/index.jsp").include(req, resp);
         } else {
             req.getRequestDispatcher("pages/authentication/login.jsp").include(req, resp);

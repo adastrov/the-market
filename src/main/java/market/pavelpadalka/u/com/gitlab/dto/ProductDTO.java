@@ -1,7 +1,5 @@
 package market.pavelpadalka.u.com.gitlab.dto;
 
-import java.util.List;
-
 public class ProductDTO {
 
     private Integer id;
@@ -55,7 +53,7 @@ public class ProductDTO {
         return productGroup;
     }
 
-    public void setProductGroups(ProductGroupDTO productGroup) {
+    public void setProductGroup(ProductGroupDTO productGroup) {
         this.productGroup = productGroup;
     }
 }

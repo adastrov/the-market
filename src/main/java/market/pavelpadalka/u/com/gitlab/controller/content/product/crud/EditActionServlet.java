@@ -38,6 +38,7 @@ public class EditActionServlet extends HttpServlet {
         ProductDTO productDTO = productService.findProductById(Integer.valueOf(id));
 
         session.setAttribute("productForEditing", productDTO);
+        session.setAttribute("productGroupId",    productDTO.getProductGroup().getId());
 
         req.getRequestDispatcher("pages/content/product-list-edit.jsp").include(req, resp);
 
@@ -75,11 +76,11 @@ public class EditActionServlet extends HttpServlet {
         ProductGroupDTO productGroupDTO = productGroupService.findProductGroupById(Integer.valueOf(productGroupId));
 
         productDTO.setTitle(title);
-        productDTO.setTitle(description);
+        productDTO.setDescription(description);
         productDTO.setPrice(Double.valueOf(price));
         productDTO.setCount(Integer.valueOf(count));
 
-        productDTO.setProductGroups(productGroupDTO);
+        productDTO.setProductGroup(productGroupDTO);
 
         Boolean updated = productService.updateProduct(productDTO);
 
@@ -88,7 +89,7 @@ public class EditActionServlet extends HttpServlet {
             session.setAttribute("error", error);
         }
 
-        resp.sendRedirect("/product-list");
+        resp.sendRedirect("/product-list-edit");
 
     }
 }

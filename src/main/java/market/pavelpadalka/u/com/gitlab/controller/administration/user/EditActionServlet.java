@@ -1,6 +1,5 @@
 package market.pavelpadalka.u.com.gitlab.controller.administration.user;
 
-
 import market.pavelpadalka.u.com.gitlab.dto.UserDTO;
 import market.pavelpadalka.u.com.gitlab.dto.UserRoleDTO;
 import market.pavelpadalka.u.com.gitlab.entity.UserSex;
@@ -32,6 +31,8 @@ public class EditActionServlet extends HttpServlet {
         UserDTO userDTO = userService.findById(Integer.valueOf(id));
 
         session.setAttribute("userForEditing", userDTO);
+        session.setAttribute("userSexName", userDTO.getSex().equals(UserSex.MALE) ? "MALE" : "FEMALE");
+        session.setAttribute("userRoleId",  userDTO.getRole().getId());
 
         req.getRequestDispatcher("pages/admin/user-edit.jsp").include(req, resp);
 

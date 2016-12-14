@@ -45,7 +45,7 @@ public class AddActionServlet extends HttpServlet {
 
         productDTO.setTitle(title);
         productDTO.setDescription(description);
-        productDTO.setProductGroups(productGroupDTO);
+        productDTO.setProductGroup(productGroupDTO);
         productDTO.setPrice(Double.valueOf(price));
         productDTO.setCount(Integer.valueOf(count));
 

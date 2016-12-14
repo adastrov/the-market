@@ -2,8 +2,11 @@ package market.pavelpadalka.u.com.gitlab.dao.impl;
 
 import market.pavelpadalka.u.com.gitlab.dao.api.ProductDAO;
 import market.pavelpadalka.u.com.gitlab.datasource.DataSource;
-import market.pavelpadalka.u.com.gitlab.entity.ProductGroup;
 import market.pavelpadalka.u.com.gitlab.entity.Product;
+import market.pavelpadalka.u.com.gitlab.entity.ProductGroup;
+import market.pavelpadalka.u.com.gitlab.helper.Transformer;
+import market.pavelpadalka.u.com.gitlab.service.api.ProductGroupService;
+import market.pavelpadalka.u.com.gitlab.service.impl.ProductGroupServiceImpl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,6 +19,7 @@ public class ProductDAOImpl implements ProductDAO {
 
     private static volatile ProductDAO instance;
     private static volatile DataSource dataSource;
+    private static volatile ProductGroupService productGroupService;
 
     private ProductDAOImpl() {
     }
@@ -26,6 +30,7 @@ public class ProductDAOImpl implements ProductDAO {
                 if (instance == null)
                     instance = new ProductDAOImpl();
                     dataSource = DataSource.getInstance();
+                    productGroupService = ProductGroupServiceImpl.getInstance();
             }
         }
         return instance;
@@ -44,12 +49,11 @@ public class ProductDAOImpl implements ProductDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
+
                 product = new Product();
-                product.setId(resultSet.getInt("product_id"));
-                product.setTitle(resultSet.getString("product_title"));
-                product.setDescription(resultSet.getString("product_description"));
-                product.setPrice(resultSet.getDouble("product_price"));
-                product.setCount(resultSet.getInt("product_count"));
+
+                setDefaultProductFields(product, resultSet);
+
             }
 
         } catch (SQLException e) {
@@ -76,11 +80,7 @@ public class ProductDAOImpl implements ProductDAO {
 
                 Product product = new Product();
 
-                product.setId(resultSet.getInt("product_id"));
-                product.setTitle(resultSet.getString("product_title"));
-                product.setDescription(resultSet.getString("product_description"));
-                product.setPrice(resultSet.getDouble("product_price"));
-                product.setCount(resultSet.getInt("product_count"));
+                setDefaultProductFields(product, resultSet);
 
                 productList.add(product);
 
@@ -110,11 +110,7 @@ public class ProductDAOImpl implements ProductDAO {
 
                 Product product = new Product();
 
-                product.setId(resultSet.getInt("product_id"));
-                product.setTitle(resultSet.getString("product_title"));
-                product.setDescription(resultSet.getString("product_description"));
-                product.setPrice(resultSet.getDouble("product_price"));
-                product.setCount(resultSet.getInt("product_count"));
+                setDefaultProductFields(product, resultSet);
 
                 productList.add(product);
 
@@ -132,14 +128,15 @@ public class ProductDAOImpl implements ProductDAO {
 
         Connection connection = dataSource.createConnection();
 
-        String createProductQuery = "INSERT INTO tbl_products (product_title, product_description, product_price, product_count) VALUES (?,?,?,?)";
+        String createProductQuery = "INSERT INTO tbl_products (product_title, product_description, product_price, product_count, product_group_id) VALUES (?,?,?,?,?)";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(createProductQuery);
             preparedStatement.setString(1, product.getTitle());
             preparedStatement.setString(2, product.getDescription());
             preparedStatement.setDouble(3, product.getPrice());
-            preparedStatement.setInt(4, product.getCount());
+            preparedStatement.setInt(4,    product.getCount());
+            preparedStatement.setInt(5,    product.getProductGroup().getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -153,7 +150,7 @@ public class ProductDAOImpl implements ProductDAO {
 
         Connection connection = dataSource.createConnection();
 
-        String updateProductQuery = "UPDATE tbl_products SET product_title = ?, product_description = ?, product_price = ?, product_count = ? WHERE product_id = ?";
+        String updateProductQuery = "UPDATE tbl_products SET product_title = ?, product_description = ?, product_price = ?, product_count = ?, product_group_id = ? WHERE product_id = ?";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(updateProductQuery);
@@ -161,7 +158,8 @@ public class ProductDAOImpl implements ProductDAO {
             preparedStatement.setString(2, product.getDescription());
             preparedStatement.setDouble(3, product.getPrice());
             preparedStatement.setInt(4, product.getCount());
-            preparedStatement.setInt(5, product.getId());
+            preparedStatement.setInt(5, product.getProductGroup().getId());
+            preparedStatement.setInt(6, product.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -190,12 +188,19 @@ public class ProductDAOImpl implements ProductDAO {
 
     }
 
-    public List<ProductGroup> findProductGroups(Integer id) {
-        List<ProductGroup> groups = new LinkedList<ProductGroup>();
-        ProductGroup productGroup = new ProductGroup();
-        productGroup.setTitle("Group mock");
-        groups.add(productGroup);
+    private void setDefaultProductFields(Product product, ResultSet resultSet) throws SQLException {
 
-        return groups;
+        product.setId(resultSet.getInt("product_id"));
+        product.setTitle(resultSet.getString("product_title"));
+        product.setDescription(resultSet.getString("product_description"));
+        product.setPrice(resultSet.getDouble("product_price"));
+        product.setCount(resultSet.getInt("product_count"));
+
+        ProductGroup productGroup = Transformer.transformProductGroupDTOToProductGroup(
+                productGroupService.findProductGroupById(resultSet.getInt("product_group_id")));
+
+        product.setProductGroup(productGroup);
+
     }
+
 }

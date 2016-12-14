@@ -13,9 +13,9 @@ import java.util.List;
 
 public class UserDAOImpl implements UserDAO {
 
-    private static volatile UserDAO     instance;
-    private static volatile DataSource  dataSource;
-    private static UserRoleService      userRoleService = UserRoleServiceImpl.getInstance();
+    private static volatile UserDAO          instance;
+    private static volatile DataSource       dataSource;
+    private static volatile UserRoleService  userRoleService;
 
     private UserDAOImpl() {
     }
@@ -26,6 +26,7 @@ public class UserDAOImpl implements UserDAO {
                 if (instance == null)
                     instance = new UserDAOImpl();
                     dataSource = DataSource.getInstance();
+                    userRoleService = UserRoleServiceImpl.getInstance();
             }
         }
         return instance;

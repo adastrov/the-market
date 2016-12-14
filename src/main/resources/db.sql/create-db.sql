@@ -3,7 +3,10 @@ CREATE TABLE market.tbl_products (
   product_title NVARCHAR(100) NOT NULL,
   product_description NVARCHAR(500),
   product_price int(14),
-  product_count int(14));
+  product_count int(14),
+  product_group_id int(14));
+
+CREATE INDEX INDEX_tbl_products ON market.tbl_products(product_title);
 
 CREATE TABLE market.tbl_product_groups (
   product_group_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
@@ -11,6 +14,9 @@ CREATE TABLE market.tbl_product_groups (
   product_group_description NVARCHAR(500));
 
 CREATE INDEX INDEX_tbl_product_groups ON market.tbl_product_groups(product_group_title);
+
+ALTER TABLE market.tbl_products
+ADD CONSTRAINT fk_tbl_products_group_id FOREIGN KEY (product_group_id) REFERENCES market.tbl_product_groups(product_group_id);
 
 CREATE TABLE market.tbl_roles (
   role_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,

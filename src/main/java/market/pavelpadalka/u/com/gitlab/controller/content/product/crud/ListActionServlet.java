@@ -25,7 +25,7 @@ public class ListActionServlet extends HttpServlet {
         ProductService productService           = ProductServiceImpl.getInstance();
 
         List<ProductGroupDTO> productGroupList = productGroupService.findAll();
-        List<ProductDTO> productDTOList        = productService.findAllAvailable();
+        List<ProductDTO> productDTOList        = productService.findAll();
 
         req.getSession().setAttribute("productGroups", productGroupList);
         req.getSession().setAttribute("products",      productDTOList);

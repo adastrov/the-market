@@ -14,6 +14,5 @@ public interface ProductDAO {
     Product create(Product product);
     Product update(Product product);
     boolean delete(Integer id);
-    List<ProductGroup> findProductGroups(Integer id);
 
 }

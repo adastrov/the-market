@@ -1,6 +1,6 @@
 package market.pavelpadalka.u.com.gitlab.entity;
 
-import java.util.List;
+import market.pavelpadalka.u.com.gitlab.dto.ProductGroupDTO;
 
 public class Product {
 
@@ -9,7 +9,7 @@ public class Product {
     private String  description;
     private Double  price;
     private Integer count;
-    private List<ProductGroup> productGroups;
+    private ProductGroup productGroup;
 
     public Integer getId() {
         return id;
@@ -51,11 +51,11 @@ public class Product {
         this.count = count;
     }
 
-    public List<ProductGroup> getProductGroups() {
-        return productGroups;
+    public ProductGroup getProductGroup() {
+        return productGroup;
     }
 
-    public void setProductGroups(List<ProductGroup> productGroups) {
-        this.productGroups = productGroups;
+    public void setProductGroup(ProductGroup productGroup) {
+        this.productGroup = productGroup;
     }
 }
