@@ -14,7 +14,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Date;
 
@@ -31,10 +30,8 @@ public class RegisterActionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        UserService userService = UserServiceImpl.getInstance();
+        UserService     userService     = UserServiceImpl.getInstance();
         UserRoleService userRoleService = UserRoleServiceImpl.getInstance();
-
-        HttpSession session = req.getSession();
 
         String  login           = req.getParameter("username");
         String  firstName       = req.getParameter("firstName");
@@ -44,22 +41,11 @@ public class RegisterActionServlet extends HttpServlet {
         String  passwordConfirm = req.getParameter("passwordConfirm");
         String  sex             = req.getParameter("sex");
         String  email           = req.getParameter("email");
-        String  error;
-
-        session.setAttribute("firstName", firstName);
-        session.setAttribute("lastName",  lastName);
-        session.setAttribute("birthday",  birthday);
-        session.setAttribute("username",  login);
-        session.setAttribute("password",  password);
-        session.setAttribute("passwordConfirm", passwordConfirm);
-        session.setAttribute("sex",   sex);
-        session.setAttribute("email", email);
 
         if (!password.equals(passwordConfirm)) {
-            error = "Both of passwords must be equal!";
 
-            session.setAttribute("user",  null);
-            session.setAttribute("error", error);
+            req.setAttribute("user",  null);
+            req.setAttribute("error", "Both of passwords must be equal!");
 
             req.getRequestDispatcher("pages/authentication/register.jsp").include(req, resp);
             return;
@@ -68,32 +54,16 @@ public class RegisterActionServlet extends HttpServlet {
         UserDTO user = userService.findByLoginAndEmail(login, email);
 
         if (user!=null) {
-            error = "This user has already been registered!";
 
-            session.setAttribute("user",  null);
-            session.setAttribute("error", error);
+            req.setAttribute("user",  null);
+            req.setAttribute("error", "This user has already been registered!");
 
             req.getRequestDispatcher("pages/authentication/register.jsp").include(req, resp);
             return;
-
         }
 
-        UserRoleDTO userRole = userRoleService.findByName(UserRoleEnum.USER.name());
-
-        if(userRole == null) {
-            error = "User hasn't been registered! Internal error";
-
-            session.setAttribute("user",  null);
-            session.setAttribute("error", error);
-
-            req.getRequestDispatcher("pages/authentication/register.jsp").include(req, resp);
-
-            System.out.println("Мой супер лог...");
-
-            return;
-        }
-
-        UserDTO userDTO = new UserDTO();
+        UserRoleDTO userRoleDTO = userRoleService.findByName(UserRoleEnum.USER.name());
+        UserDTO userDTO         = new UserDTO();
 
         userDTO.setLogin(login);
         userDTO.setPassword(password);
@@ -102,32 +72,21 @@ public class RegisterActionServlet extends HttpServlet {
         userDTO.setBirthday(Date.valueOf(birthday));
         userDTO.setSex(sex.equals("male") ? UserSex.MALE : UserSex.FEMALE);
         userDTO.setEmail(email);
-        userDTO.setRole(userRole);
+        userDTO.setRole(userRoleDTO);
 
         UserDTO createdUser = userService.create(userDTO);
 
-        if (createdUser==null) {
-            error = "User hasn't been registered! Internal error";
+        if (createdUser==null || userRoleDTO == null) {
 
-            session.setAttribute("user",  null);
-            session.setAttribute("error", error);
+            req.setAttribute("user",  null);
+            req.setAttribute("error", "User hasn't been registered! Internal error");
 
             req.getRequestDispatcher("pages/authentication/register.jsp").include(req, resp);
             return;
         }
 
-        session.setAttribute("user",  createdUser);
-        session.setAttribute("currentUserAdmin", user.getRole().getName().equals(UserRoleEnum.ADMIN.toString().toLowerCase()));
-        session.setAttribute("error", null);
-
-        session.setAttribute("firstName", null);
-        session.setAttribute("lastName",  null);
-        session.setAttribute("birthday",  null);
-        session.setAttribute("username",  null);
-        session.setAttribute("password",  null);
-        session.setAttribute("passwordConfirm", null);
-        session.setAttribute("sex",   null);
-        session.setAttribute("email", null);
+        req.setAttribute("error", null);
+        req.setAttribute("user",  createdUser);
 
         req.getRequestDispatcher("pages/index.jsp").include(req, resp);
 

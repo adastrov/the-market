@@ -27,7 +27,7 @@
 <main>
     <div class="container-fluid">
 
-        <h2>Список товаров:</h2>
+        <h2>Товары в корзине:</h2>
 
         <table class="table table-hover">
 
@@ -54,13 +54,19 @@
                 <td>${product.getDescription()}</td>
                 <td>${product.getPrice()}</td>
 
-                <c:if test="${not empty sessionScope.get('user')}">
-                    <td>
-                        <form style="margin-top: 5px;" action="<c:url value='/product-list' />" method='POST'>
-                            <button class="btn btn-lg btn-primary btn-block" name="id" type="submit" value="${product.getId()}">В корзину</button>
-                        </form>
-                    </td>
-                </c:if>
+                <td>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit" value="Add">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        Заказать
+                    </button>
+                </td>
+
+                <td>
+                    <button class="btn btn-lg btn-warning btn-block" type="submit" value="Remove">
+                        <span class="glyphicon glyphicon-remove"></span>
+                        Отменить
+                    </button>
+                </td>
 
                 </tbody>
 

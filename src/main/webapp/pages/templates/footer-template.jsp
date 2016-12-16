@@ -1,0 +1,1 @@
+<p>© Pavel Padalka 2016</p>

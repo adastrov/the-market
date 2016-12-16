@@ -12,10 +12,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet({"/product-add"})
+@WebServlet({"/content/product-add"})
 public class AddActionServlet extends HttpServlet {
 
     @Override
@@ -28,20 +27,23 @@ public class AddActionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        ProductService productService = ProductServiceImpl.getInstance();
+        ProductService productService           = ProductServiceImpl.getInstance();
         ProductGroupService productGroupService = ProductGroupServiceImpl.getInstance();
-        HttpSession session = req.getSession();
 
         String  title        = req.getParameter("title");
         String  description  = req.getParameter("description");
         String  productGroup = req.getParameter("productGroup");
         String  price        = req.getParameter("price");
         String  count        = req.getParameter("count");
-        String  error;
 
-        ProductDTO productDTO = new ProductDTO();
-
+        ProductDTO productDTO           = new ProductDTO();
         ProductGroupDTO productGroupDTO = productGroupService.findProductGroupById(Integer.valueOf(productGroup));
+
+        if (productGroupDTO==null) {
+            req.setAttribute("error", "Product hasn't been registered! Internal error");
+            resp.sendRedirect("/product-list-edit");
+            return;
+        }
 
         productDTO.setTitle(title);
         productDTO.setDescription(description);
@@ -49,13 +51,15 @@ public class AddActionServlet extends HttpServlet {
         productDTO.setPrice(Double.valueOf(price));
         productDTO.setCount(Integer.valueOf(count));
 
-        ProductDTO createdProduct = productService.create(productDTO);
+        ProductDTO createdProductDTO = productService.create(productDTO);
 
-        if (createdProduct==null) {
-            error = "Product hasn't been registered! Internal error";
-            session.setAttribute("error", error);
+        if (createdProductDTO==null) {
+            req.setAttribute("error", "Product hasn't been registered! Internal error");
+            resp.sendRedirect("/product-list-edit");
+            return;
         }
 
+        req.setAttribute("error", null);
         resp.sendRedirect("/product-list-edit");
 
     }

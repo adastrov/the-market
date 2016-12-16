@@ -16,9 +16,12 @@ import java.io.IOException;
 @WebServlet({"/login"})
 public class LoginActionServlet extends HttpServlet {
 
+    private final static String ADMIN = UserRoleEnum.ADMIN.toString().toLowerCase();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        req.setAttribute("doNotShowRegisterAndIncomeButtons", true);
         req.getRequestDispatcher("pages/authentication/login.jsp").include(req, resp);
 
     }
@@ -28,21 +31,29 @@ public class LoginActionServlet extends HttpServlet {
 
         UserService userService = UserServiceImpl.getInstance();
 
+        HttpSession session = req.getSession();
+
+        UserDTO userDTO;
+
         String login    = req.getParameter("username");
         String password = req.getParameter("password");
 
-        UserDTO user = userService.findByLoginAndPassword(login, password);
+        userDTO = userService.findByLoginAndPassword(login, password);
 
-        HttpSession session = req.getSession();
-        session.setAttribute("user", user);
-        session.setAttribute("error", user==null ? null : "Wrong username or password!");
-
-        if (user!=null) {
-            session.setAttribute("currentUserAdmin", user.getRole().getName().equals(UserRoleEnum.ADMIN.toString().toLowerCase()));
-            req.getRequestDispatcher("pages/index.jsp").include(req, resp);
-        } else {
+        if (userDTO==null) {
+            req.setAttribute("error", "Wrong username or password!");
+            req.setAttribute("doNotShowRegisterAndIncomeButtons", true);
             req.getRequestDispatcher("pages/authentication/login.jsp").include(req, resp);
+            return;
         }
+
+        req.setAttribute("doNotShowRegisterAndIncomeButtons", null);
+
+        req.setAttribute("error", null);
+        session.setAttribute("user",  userDTO);
+        session.setAttribute("currentUserAdmin", userDTO.getRole().getName().toLowerCase().equals(ADMIN));
+
+        req.getRequestDispatcher("pages/index.jsp").include(req, resp);
 
     }
 }

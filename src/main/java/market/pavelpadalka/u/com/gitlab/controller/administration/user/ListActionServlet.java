@@ -15,23 +15,22 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet({"/users-list"})
+@WebServlet({"/admin/users-list"})
 public class ListActionServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        UserService userService = UserServiceImpl.getInstance();
-
+        UserService     userService     = UserServiceImpl.getInstance();
         UserRoleService userRoleService = UserRoleServiceImpl.getInstance();
 
-        List<UserDTO> userDTOList = userService.findAll();
-
+        List<UserDTO>     userDTOList     = userService.findAll();
         List<UserRoleDTO> userRoleDTOList = userRoleService.findAll();
 
         req.getSession().setAttribute("users", userDTOList);
         req.getSession().setAttribute("roles", userRoleDTOList);
 
         req.getRequestDispatcher("pages/admin/users-list.jsp").include(req, resp);
+
     }
 }

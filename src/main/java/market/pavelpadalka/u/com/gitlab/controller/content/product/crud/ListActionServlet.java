@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet({"/product-list-edit"})
+@WebServlet({"/content/product-list-edit"})
 public class ListActionServlet extends HttpServlet {
 
     @Override
@@ -27,8 +27,8 @@ public class ListActionServlet extends HttpServlet {
         List<ProductGroupDTO> productGroupList = productGroupService.findAll();
         List<ProductDTO> productDTOList        = productService.findAll();
 
-        req.getSession().setAttribute("productGroups", productGroupList);
-        req.getSession().setAttribute("products",      productDTOList);
+        req.setAttribute("productGroups", productGroupList);
+        req.setAttribute("products",      productDTOList);
 
         req.getRequestDispatcher("pages/content/product-list-crud.jsp").include(req, resp);
     }

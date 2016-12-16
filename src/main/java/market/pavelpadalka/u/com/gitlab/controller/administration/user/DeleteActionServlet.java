@@ -8,19 +8,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet({"/user-delete"})
+@WebServlet({"/admin/user-delete"})
 public class DeleteActionServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String error;
+        String error = null;
 
         UserService userService = UserServiceImpl.getInstance();
-        HttpSession session = req.getSession();
 
         String  id = req.getParameter("id");
 
@@ -28,9 +26,9 @@ public class DeleteActionServlet extends HttpServlet {
 
         if (!result) {
             error = "User hasn't been deleted! Internal error";
-            session.setAttribute("error", error);
         }
 
+        req.setAttribute("error", error);
         resp.sendRedirect("/users-list");
 
     }

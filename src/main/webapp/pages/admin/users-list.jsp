@@ -20,202 +20,136 @@
 <body>
 
 
-<div class="navbar">
+<header>
+    <%@include file="/pages/templates/header-template.jsp" %>
+</header>
 
-    <nav class="navbar navbar-default" role="navigation">
-
+<main>
+    <form name="registerForm" action="<c:url value='/admin/user-add' />" method='POST'>
         <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="<c:url value="/index"/>">The-market</a>
 
-            </div>
+            <h2>Добавить пользователя:</h2>
 
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="<c:url value="/index"/>">
-                            <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Домой
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<c:url value="/product-list"/>">
-                            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Товары
-                        </a>
-                    </li>
+            <table class="table table-hover">
 
-                    <c:if test="${sessionScope.currentUserAdmin}">
-                        <li class="dropdown">
-                            <a href="<c:url value="/index"/>" class="dropdown-toggle" data-toggle="dropdown">Администрирование<b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li class="divider"></li>
-                                <li><a href="<c:url value="/product-list-edit"/>">Список товаров</a></li>
-                                <li class="divider"></li>
-                                <li><a href="<c:url value="/users-list"/>">Список пользователей</a></li>
-                            </ul>
-                        </li>
-                    </c:if>
+                <td>
 
-                </ul>
+                    <thead>
+                    <tr>
+                        <th>Login</th>
+                        <th>Pass</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Birthday</th>
+                        <th>Sex</th>
+                        <th></th>
+                    </tr>
+                    </thead>
 
+                <td><input type="text" class="form-control" name="username" placeholder="Логин" required autofocus
+                           value=""></td>
+                <td><input type="password" class="form-control" name="password" placeholder="Пароль" required value="">
+                </td>
+                <td><input type="email" class="form-control" name="email" placeholder="E-mail" required value=""></td>
 
-                <form class="navbar-form navbar-right">
+                <td>
 
-                    <c:choose>
-                        <c:when test="${empty sessionScope.get('user')}">
-                            <a class="btn btn-primary regis" href="<c:url value="/register" />" role="button">Регистрация</a>
-                            <a class="btn btn-success" href="<c:url value="/login" />" role="button">Войти</a>
-                        </c:when>
-                        <c:otherwise>
-                            <div>
-                                <span class="userName">Ваш логин: <span class="boldText"> "${sessionScope.get('user').getLogin()}" </span></span>
-                                <a class="btn btn-danger pull-right" href="<c:url value="/logout" />" role="button">Выйти</a>
-                            </div>
-                        </c:otherwise>
-                    </c:choose>
+                    <select class="form-control" name="role">
+                        <option disabled>Укажите роль</option>
 
-                </form>
+                        <c:forEach items="${sessionScope.roles}" var="role">
+                            <option value=${role.getName()}>${role.getDescription()}</option>
+                        </c:forEach>
+                    </select>
 
-            </div>
+                </td>
 
-        </div><!-- /.navbar-collapse -->
+                <td><input type="text" class="form-control" name="firstName" placeholder="Имя" required value=""></td>
+                <td><input type="text" class="form-control" name="lastName" placeholder="Фамилия" required value="">
+                </td>
+                <td><input type="date" class="form-control" name="birthday" placeholder="Дата рождения" required
+                           value=""></td>
 
-    </nav>
+                <td>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="sex" id="male" value="male"
+                                   <c:if test="${sessionScope.get('sex') == null }">checked</c:if>
+                                   <c:if test="${sessionScope.get('sex') == 'male' }">checked</c:if>>
+                            Мужской
+                        </label>
+                    </div>
+
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="sex" id="female" value="female"
+                                   <c:if test="${sessionScope.get('sex') == 'female' }">checked</c:if>>
+                            Женский
+                        </label>
+                    </div>
+                </td>
+
+                <td>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit" value="Add">Добавить</button>
+                </td>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </form>
 
     <div class="container-fluid">
-        <form class="navbar-form navbar-right" style="margin-top: 5px;">
 
-            <c:if test="${not empty sessionScope.get('user')}">
-                <button type="button" class="btn btn-info">
-                    <span class="glyphicon glyphicon-shopping-cart"></span>
-                    <span class="badge">0</span></button>
-            </c:if>
+        <h2>Список пользователей:</h2>
 
-        </form>
-    </div>
+        <table class="table table-hover">
 
-</div>
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>Login</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Birthday</th>
+                <th>Sex</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
 
+            <c:forEach items="${sessionScope.users}" var="user">
 
-<form name="registerForm" action="<c:url value='/user-add' />" method='POST'>
-<div class="container-fluid">
+                <tbody>
+                <th scope="row">${user.getId()}</th>
+                <td>${user.getLogin()}</td>
+                <td>${user.getEmail()}</td>
+                <td>${user.getRole().getName()}</td>
+                <td>${user.getFirstName()}</td>
+                <td>${user.getLastName()}</td>
+                <td>${user.getBirthday()}</td>
+                <td>${user.getSex().toString()}</td>
+                <td><a href="/user-edit?id=${user.getId()}">Изменить</a></td>
+                <td><a href="/user-delete?id=${user.getId()}">Удалить</a></td>
+                </tbody>
 
-    <h2>Добавить пользователя:</h2>
-
-    <table class="table table-hover">
-
-<td>
-
-    <thead>
-    <tr>
-        <th>Login</th>
-        <th>Pass</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>First name</th>
-        <th>Last name</th>
-        <th>Birthday</th>
-        <th>Sex</th>
-        <th></th>
-    </tr>
-    </thead>
-
-    <td><input type="text" class="form-control" name="username" placeholder="Логин" required autofocus value=""></td>
-    <td><input type="password" class="form-control" name="password" placeholder="Пароль" required value=""></td>
-    <td><input type="email" class="form-control" name="email" placeholder="E-mail" required value=""></td>
-
-    <td>
-
-        <select class="form-control" name="role">
-            <option disabled>Укажите роль</option>
-
-            <c:forEach items="${sessionScope.roles}" var="role">
-                <option value=${role.getName()}>${role.getDescription()}</option>
             </c:forEach>
-        </select>
-
-    </td>
-
-    <td><input type="text" class="form-control" name="firstName" placeholder="Имя" required value=""></td>
-    <td><input type="text" class="form-control" name="lastName" placeholder="Фамилия" required value=""></td>
-    <td><input type="date" class="form-control" name="birthday" placeholder="Дата рождения" required value=""></td>
-
-    <td>
-        <div class="radio">
-            <label>
-                <input type="radio" name="sex" id="male" value="male" <c:if test="${sessionScope.get('sex') == null }">checked</c:if> <c:if test="${sessionScope.get('sex') == 'male' }">checked</c:if>>
-                Мужской
-            </label>
-        </div>
-
-        <div class="radio">
-            <label>
-                <input type="radio" name="sex" id="female" value="female" <c:if test="${sessionScope.get('sex') == 'female' }">checked</c:if>>
-                Женский
-            </label>
-        </div>
-    </td>
-
-    <td><button class="btn btn-lg btn-primary btn-block" type="submit" value="Add">Добавить</button></td>
-
-</tbody>
-
-</table>
-
-</div>
-
-</form>
-
-<div class="container-fluid">
-
-    <h2>Список пользователей:</h2>
-
-    <table class="table table-hover">
-
-<thead>
-    <tr>
-        <th>id</th>
-        <th>Login</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>First name</th>
-        <th>Last name</th>
-        <th>Birthday</th>
-        <th>Sex</th>
-        <th></th>
-        <th></th>
-    </tr>
-</thead>
-
-<c:forEach items="${sessionScope.users}" var="user">
-
-    <tbody>
-    <th scope="row">${user.getId()}</th>
-        <td>${user.getLogin()}</td>
-        <td>${user.getEmail()}</td>
-        <td>${user.getRole().getName()}</td>
-        <td>${user.getFirstName()}</td>
-        <td>${user.getLastName()}</td>
-        <td>${user.getBirthday()}</td>
-        <td>${user.getSex().toString()}</td>
-        <td><a href="/user-edit?id=${user.getId()}">Изменить</a></td>
-        <td><a href="/user-delete?id=${user.getId()}">Удалить</a></td>
-    </tbody>
-
-</c:forEach>
 
 
-</table>
+        </table>
 
-</div>
+    </div>
+</main>
 
 <footer>
-    <p>© Pavel Padalka 2016</p>
+    <%@include file="/pages/templates/footer-template.jsp" %>
 </footer>
+
 </body>
 </html>

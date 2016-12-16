@@ -13,11 +13,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Date;
 
-@WebServlet({"/user-add"})
+@WebServlet({"/admin/user-add"})
 public class AddActionServlet extends HttpServlet {
 
     @Override
@@ -30,10 +29,8 @@ public class AddActionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        UserService userService = UserServiceImpl.getInstance();
+        UserService     userService     = UserServiceImpl.getInstance();
         UserRoleService userRoleService = UserRoleServiceImpl.getInstance();
-
-        HttpSession session = req.getSession();
 
         String  login           = req.getParameter("username");
         String  email           = req.getParameter("email");
@@ -43,15 +40,13 @@ public class AddActionServlet extends HttpServlet {
         String  lastName        = req.getParameter("lastName");
         String  birthday        = req.getParameter("birthday");
         String  sex             = req.getParameter("sex");
-        String  error;
 
         UserDTO user = userService.findByLoginAndEmail(login, email);
 
         if (user!=null) {
-            error = "This user has already been registered!";
 
-            session.setAttribute("user",  null);
-            session.setAttribute("error", error);
+            req.setAttribute("user",  null);
+            req.setAttribute("error", "This user has already been registered!");
 
             req.getRequestDispatcher("pages/users-list.jsp").include(req, resp);
             return;
@@ -74,12 +69,13 @@ public class AddActionServlet extends HttpServlet {
         UserDTO createdUser = userService.create(userDTO);
 
         if (createdUser==null) {
-            error = "User hasn't been registered! Internal error";
 
-            session.setAttribute("user",  null);
-            session.setAttribute("error", error);
+            req.setAttribute("user",  null);
+            req.setAttribute("error", "User hasn't been registered! Internal error");
 
         }
+
+        req.setAttribute("error", null);
 
         resp.sendRedirect("/users-list");
 

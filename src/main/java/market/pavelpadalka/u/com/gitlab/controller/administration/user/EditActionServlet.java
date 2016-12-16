@@ -13,26 +13,31 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Date;
 
-@WebServlet({"/user-edit"})
+@WebServlet({"/admin/user-edit"})
 public class EditActionServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         UserService userService = UserServiceImpl.getInstance();
-        HttpSession session     = req.getSession();
 
-        String  id = req.getParameter("id");
+        String  userId = req.getParameter("id");
 
-        UserDTO userDTO = userService.findById(Integer.valueOf(id));
+        UserDTO userDTO = userService.findById(Integer.valueOf(userId));
 
-        session.setAttribute("userForEditing", userDTO);
-        session.setAttribute("userSexName", userDTO.getSex().equals(UserSex.MALE) ? "MALE" : "FEMALE");
-        session.setAttribute("userRoleId",  userDTO.getRole().getId());
+        if (userDTO==null) {
+            req.setAttribute("error", "User hasn't been deleted! Internal error");
+            resp.sendRedirect("/users-list");
+            return;
+        }
+
+        req.setAttribute("error", null);
+        req.setAttribute("userForEditing", userDTO);
+        req.setAttribute("userSexName",    userDTO.getSex().equals(UserSex.MALE) ? "MALE" : "FEMALE");
+        req.setAttribute("userRoleId",     userDTO.getRole().getId());
 
         req.getRequestDispatcher("pages/admin/user-edit.jsp").include(req, resp);
 
@@ -41,10 +46,8 @@ public class EditActionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        UserService userService = UserServiceImpl.getInstance();
+        UserService     userService     = UserServiceImpl.getInstance();
         UserRoleService userRoleService = UserRoleServiceImpl.getInstance();
-
-        HttpSession session = req.getSession();
 
         String  id        = req.getParameter("id");
         String  login     = req.getParameter("username");
@@ -55,21 +58,18 @@ public class EditActionServlet extends HttpServlet {
         String  lastName  = req.getParameter("lastName");
         String  birthday  = req.getParameter("birthday");
         String  sex       = req.getParameter("sex");
-        String  error;
 
-        UserDTO userDTO = userService.findById(Integer.valueOf(id));
+        UserDTO userDTO         = userService.findById(Integer.valueOf(id));
+        UserRoleDTO userRoleDTO = userRoleService.findByName(role);
 
-        if (userDTO==null) {
-            error = "Internal server error!";
+        if (userDTO==null || userRoleDTO==null) {
 
             System.out.println("и тут крутой лог...");
 
-            session.setAttribute("error", error);
+            req.setAttribute("error", "Internal server error!");
             req.getRequestDispatcher("pages/users-list.jsp").include(req, resp);
             return;
         }
-
-        UserRoleDTO userRole = userRoleService.findByName(role);
 
         userDTO.setLogin(login);
         userDTO.setPassword(password);
@@ -78,13 +78,14 @@ public class EditActionServlet extends HttpServlet {
         userDTO.setBirthday(Date.valueOf(birthday));
         userDTO.setSex(sex.equals("male") ? UserSex.MALE : UserSex.FEMALE);
         userDTO.setEmail(email);
-        userDTO.setRole(userRole);
+        userDTO.setRole(userRoleDTO);
 
-        UserDTO updatedUser = userService.update(userDTO);
+        UserDTO updatedUserDTO = userService.update(userDTO);
 
-        if (updatedUser==null) {
-            error = "User hasn't been updated! Internal error";
-            session.setAttribute("error", error);
+        if (updatedUserDTO==null) {
+            req.setAttribute("error", "User hasn't been updated! Internal error");
+            req.getRequestDispatcher("pages/users-list.jsp").include(req, resp);
+            return;
         }
 
         resp.sendRedirect("/users-list");
