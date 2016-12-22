@@ -30,7 +30,7 @@ public class EditActionServlet extends HttpServlet {
 
         if (userDTO==null) {
             req.setAttribute("error", "User hasn't been deleted! Internal error");
-            resp.sendRedirect("/users-list");
+            resp.sendRedirect("/admin/users-list");
             return;
         }
 
@@ -39,7 +39,7 @@ public class EditActionServlet extends HttpServlet {
         req.setAttribute("userSexName",    userDTO.getSex().equals(UserSex.MALE) ? "MALE" : "FEMALE");
         req.setAttribute("userRoleId",     userDTO.getRole().getId());
 
-        req.getRequestDispatcher("pages/admin/user-edit.jsp").include(req, resp);
+        req.getRequestDispatcher("/pages/admin/user-edit.jsp").include(req, resp);
 
     }
 
@@ -67,7 +67,7 @@ public class EditActionServlet extends HttpServlet {
             System.out.println("и тут крутой лог...");
 
             req.setAttribute("error", "Internal server error!");
-            req.getRequestDispatcher("pages/users-list.jsp").include(req, resp);
+            req.getRequestDispatcher("/pages/admin/users-list.jsp").include(req, resp);
             return;
         }
 
@@ -84,11 +84,11 @@ public class EditActionServlet extends HttpServlet {
 
         if (updatedUserDTO==null) {
             req.setAttribute("error", "User hasn't been updated! Internal error");
-            req.getRequestDispatcher("pages/users-list.jsp").include(req, resp);
+            req.getRequestDispatcher("/pages/admin/users-list.jsp").include(req, resp);
             return;
         }
 
-        resp.sendRedirect("/users-list");
+        resp.sendRedirect("/admin/users-list");
 
     }
 }

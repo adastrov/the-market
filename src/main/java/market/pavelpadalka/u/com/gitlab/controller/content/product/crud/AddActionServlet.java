@@ -20,7 +20,7 @@ public class AddActionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        req.getRequestDispatcher("pages/content/product-list-edit.jsp").include(req, resp);
+        req.getRequestDispatcher("/pages/content/product-list-edit.jsp").include(req, resp);
 
     }
 
@@ -41,7 +41,7 @@ public class AddActionServlet extends HttpServlet {
 
         if (productGroupDTO==null) {
             req.setAttribute("error", "Product hasn't been registered! Internal error");
-            resp.sendRedirect("/product-list-edit");
+            resp.sendRedirect("/pages/content/product-list-edit");
             return;
         }
 
@@ -60,7 +60,7 @@ public class AddActionServlet extends HttpServlet {
         }
 
         req.setAttribute("error", null);
-        resp.sendRedirect("/product-list-edit");
+        resp.sendRedirect("/content/product-list-edit");
 
     }
 

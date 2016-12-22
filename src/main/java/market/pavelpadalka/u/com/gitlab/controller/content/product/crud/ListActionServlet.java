@@ -30,6 +30,6 @@ public class ListActionServlet extends HttpServlet {
         req.setAttribute("productGroups", productGroupList);
         req.setAttribute("products",      productDTOList);
 
-        req.getRequestDispatcher("pages/content/product-list-crud.jsp").include(req, resp);
+        req.getRequestDispatcher("/pages/content/product-list-crud.jsp").include(req, resp);
     }
 }

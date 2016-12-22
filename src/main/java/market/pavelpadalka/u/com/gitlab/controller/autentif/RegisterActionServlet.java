@@ -88,7 +88,7 @@ public class RegisterActionServlet extends HttpServlet {
         req.setAttribute("error", null);
         req.setAttribute("user",  createdUser);
 
-        req.getRequestDispatcher("pages/index.jsp").include(req, resp);
+        req.getRequestDispatcher("/pages/index.jsp").include(req, resp);
 
     }
 

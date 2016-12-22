@@ -1,0 +1,41 @@
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    color: rgba(255, 160, 0, 0.9);
+    background-color: transparent;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+    margin-top: 5%;
+    vertical-align: middle;
+    text-align: center;
+    background: rgb(255, 255, 255);
+}
+
+.jumbotron .btn {
+    /*font-size: 21px;*/
+    padding: 14px 24px;
+}
+
+.panel {
+    border: none;
+}
+
+.panel-footer {
+    position: absolute;
+    width: 100%;
+    border: none;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    background: rgba(255, 160, 0, 0.8);
+}
+
+.img-responsive {
+    display: inline;
+    max-width: 43%;
+}
+body {
+    min-height: 100vh;
+    position: relative;
+    padding-bottom: 40px;
+}

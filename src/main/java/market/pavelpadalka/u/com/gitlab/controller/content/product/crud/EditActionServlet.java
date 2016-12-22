@@ -1,6 +1,5 @@
 package market.pavelpadalka.u.com.gitlab.controller.content.product.crud;
 
-
 import market.pavelpadalka.u.com.gitlab.dto.ProductDTO;
 import market.pavelpadalka.u.com.gitlab.dto.ProductGroupDTO;
 import market.pavelpadalka.u.com.gitlab.service.api.ProductGroupService;
@@ -15,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet({"/content/product-edit"})
 public class EditActionServlet extends HttpServlet {
@@ -22,7 +22,8 @@ public class EditActionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        ProductService productService = ProductServiceImpl.getInstance();
+        ProductService      productService      = ProductServiceImpl.getInstance();
+        ProductGroupService productGroupService = ProductGroupServiceImpl.getInstance();
 
         String  id = req.getParameter("id");
 
@@ -30,15 +31,18 @@ public class EditActionServlet extends HttpServlet {
 
         if (productDTO==null) {
             req.setAttribute("error", "Product hasn't been found! Internal error");
-            resp.sendRedirect("/product-edit");
+            resp.sendRedirect("/content/product-edit");
             return;
         }
 
+        List<ProductGroupDTO> productGroupDTOList = productGroupService.findAll();
+
         req.setAttribute("error",             null);
         req.setAttribute("productForEditing", productDTO);
+        req.setAttribute("productGroups",     productGroupDTOList);
         req.setAttribute("productGroupId",    productDTO.getProductGroup().getId());
 
-        req.getRequestDispatcher("pages/content/product-list-edit.jsp").include(req, resp);
+        req.getRequestDispatcher("/pages/content/product-list-edit.jsp").include(req, resp);
 
     }
 
@@ -60,7 +64,7 @@ public class EditActionServlet extends HttpServlet {
 
         if (productDTO==null || productGroupDTO==null) {
             req.setAttribute("error", "Internal server error!");
-            resp.sendRedirect("/product-list");
+            resp.sendRedirect("/content/product-list");
             return;
         }
 
@@ -78,7 +82,7 @@ public class EditActionServlet extends HttpServlet {
         }
 
         req.setAttribute("error", null);
-        resp.sendRedirect("/product-list-edit");
+        resp.sendRedirect("/content/product-list-edit");
 
     }
 }

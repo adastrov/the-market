@@ -1,1 +1,7 @@
-<p>© Pavel Padalka 2016</p>
+<div class="panel panel-default">
+
+    <div class="panel-footer">
+        <p class="copyright">© 2016 Pavel Padalka</p>
+    </div>
+
+</div>

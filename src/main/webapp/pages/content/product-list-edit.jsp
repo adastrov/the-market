@@ -11,7 +11,7 @@
     <title>Список товаров</title>
 
     <link href="<c:url value="/pages/css/bootstrap.css" />" rel="stylesheet">
-    <link href="<c:url value="/pages/css/main.css" />" rel="stylesheet">
+    <link href="<c:url value="/pages/css/general.css" />" rel="stylesheet">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -25,7 +25,7 @@
 </header>
 
 <main>
-    <form name="registerForm" action="<c:url value='/product-edit' />" method='POST'>
+    <form name="registerForm" action="<c:url value='/content/product-edit' />" method='POST'>
         <div class="container-fluid">
 
             <h2>Изменить товар:</h2>
@@ -48,18 +48,18 @@
 
                     <tbody>
                     <td><input type="hidden" class="form-control" name="id"
-                               value="${sessionScope.productForEditing.getId()}"></td>
+                               value="${productForEditing.getId()}"></td>
                     <td><input type="text" class="form-control" name="title" placeholder="Наименование" required
-                               autofocus value="${sessionScope.productForEditing.getTitle()}"></td>
+                               autofocus value="${productForEditing.getTitle()}"></td>
 
                     <td>
 
                         <select class="form-control" name="productGroup">
-                            <option disabled>Укажите группы товара</option>
+                            <option disabled>Укажите группу товара</option>
 
-                            <c:forEach items="${sessionScope.productGroups}" var="productGroup">
+                            <c:forEach items="${productGroups}" var="productGroup">
                                 <option <c:if
-                                        test="${sessionScope.productGroupId.equals(productGroup.getId())}"> selected </c:if>
+                                        test="${productGroupId.equals(productGroup.getId())}"> selected </c:if>
                                         value=${productGroup.getId()}>${productGroup.getTitle()}</option>
                             </c:forEach>
 
@@ -68,12 +68,12 @@
                     </td>
 
                     <td><input type="text" class="form-control" name="description" placeholder="Описание" required
-                               autofocus value="${sessionScope.productForEditing.getTitle()}"></td>
+                               autofocus value="${productForEditing.getTitle()}"></td>
 
                     <td><input type="number" class="form-control" name="price" placeholder="Цена" required autofocus
-                               value="${sessionScope.productForEditing.getPrice()}"></td>
+                               value="${productForEditing.getPrice()}"></td>
                     <td><input type="number" class="form-control" name="count" placeholder="Количество" required
-                               autofocus value="${sessionScope.productForEditing.getCount()}"></td>
+                               autofocus value="${productForEditing.getCount()}"></td>
 
                     <td>
                         <button class="btn btn-lg btn-primary btn-block" type="submit" value="Add">Изменить</button>

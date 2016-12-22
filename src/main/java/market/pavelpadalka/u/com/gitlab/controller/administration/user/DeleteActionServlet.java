@@ -29,7 +29,7 @@ public class DeleteActionServlet extends HttpServlet {
         }
 
         req.setAttribute("error", error);
-        resp.sendRedirect("/users-list");
+        resp.sendRedirect("/admin/users-list");
 
     }
 

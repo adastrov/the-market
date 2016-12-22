@@ -22,7 +22,7 @@ public class LoginActionServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         req.setAttribute("doNotShowRegisterAndIncomeButtons", true);
-        req.getRequestDispatcher("pages/authentication/login.jsp").include(req, resp);
+        req.getRequestDispatcher("/pages/authentication/login.jsp").include(req, resp);
 
     }
 
@@ -30,8 +30,6 @@ public class LoginActionServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         UserService userService = UserServiceImpl.getInstance();
-
-        HttpSession session = req.getSession();
 
         UserDTO userDTO;
 
@@ -43,9 +41,11 @@ public class LoginActionServlet extends HttpServlet {
         if (userDTO==null) {
             req.setAttribute("error", "Wrong username or password!");
             req.setAttribute("doNotShowRegisterAndIncomeButtons", true);
-            req.getRequestDispatcher("pages/authentication/login.jsp").include(req, resp);
+            req.getRequestDispatcher("/pages/authentication/login.jsp").include(req, resp);
             return;
         }
+
+        HttpSession session = req.getSession();
 
         req.setAttribute("doNotShowRegisterAndIncomeButtons", null);
 
@@ -53,7 +53,7 @@ public class LoginActionServlet extends HttpServlet {
         session.setAttribute("user",  userDTO);
         session.setAttribute("currentUserAdmin", userDTO.getRole().getName().toLowerCase().equals(ADMIN));
 
-        req.getRequestDispatcher("pages/index.jsp").include(req, resp);
+        req.getRequestDispatcher("/pages/index.jsp").include(req, resp);
 
     }
 }

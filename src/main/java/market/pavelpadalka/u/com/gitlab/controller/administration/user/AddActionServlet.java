@@ -22,7 +22,7 @@ public class AddActionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        req.getRequestDispatcher("pages/users-list.jsp").include(req, resp);
+        req.getRequestDispatcher("/pages/admin/content/users-list.jsp").include(req, resp);
 
     }
 
@@ -48,7 +48,7 @@ public class AddActionServlet extends HttpServlet {
             req.setAttribute("user",  null);
             req.setAttribute("error", "This user has already been registered!");
 
-            req.getRequestDispatcher("pages/users-list.jsp").include(req, resp);
+            req.getRequestDispatcher("/pages/admin/users-list.jsp").include(req, resp);
             return;
 
         }
@@ -77,7 +77,7 @@ public class AddActionServlet extends HttpServlet {
 
         req.setAttribute("error", null);
 
-        resp.sendRedirect("/users-list");
+        resp.sendRedirect("/admin/users-list");
 
     }
 

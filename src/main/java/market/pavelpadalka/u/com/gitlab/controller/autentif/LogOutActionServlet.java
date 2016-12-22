@@ -18,7 +18,7 @@ public class LogOutActionServlet extends HttpServlet {
         session.setAttribute("user", null);
         session.setAttribute("currentUserAdmin", false);
 
-        req.getRequestDispatcher("pages/index.jsp").include(req, resp);
+        req.getRequestDispatcher("/pages/index.jsp").include(req, resp);
 
     }
 }

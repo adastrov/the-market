@@ -8,13 +8,20 @@
 
     <meta charset="UTF-8">
 
-    <title>Список товаров</title>
+    <title>Список пользователей</title>
 
     <link href="<c:url value="/pages/css/bootstrap.css" />" rel="stylesheet">
-    <link href="<c:url value="/pages/css/main.css" />" rel="stylesheet">
+    <link href="<c:url value="/pages/css/general.css" />" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+        $(document).on("click", "#add", function () {
+            $.post("/admin/user-add", function (response) {
+                $("#userAdd").test(response);
+            })
+        });
+    </script>
 </head>
 
 <body>
@@ -25,8 +32,8 @@
 </header>
 
 <main>
-    <form name="registerForm" action="<c:url value='/admin/user-add' />" method='POST'>
-        <div class="container-fluid">
+    <form id="userListForm">
+        <div id="userAdd" class="container-fluid">
 
             <h2>Добавить пользователя:</h2>
 
@@ -59,7 +66,7 @@
                     <select class="form-control" name="role">
                         <option disabled>Укажите роль</option>
 
-                        <c:forEach items="${sessionScope.roles}" var="role">
+                        <c:forEach items="${roles}" var="role">
                             <option value=${role.getName()}>${role.getDescription()}</option>
                         </c:forEach>
                     </select>
@@ -76,8 +83,8 @@
                     <div class="radio">
                         <label>
                             <input type="radio" name="sex" id="male" value="male"
-                                   <c:if test="${sessionScope.get('sex') == null }">checked</c:if>
-                                   <c:if test="${sessionScope.get('sex') == 'male' }">checked</c:if>>
+                                   <c:if test="${sex == null }">checked</c:if>
+                                   <c:if test="${sex == 'male' }">checked</c:if>>
                             Мужской
                         </label>
                     </div>
@@ -85,14 +92,15 @@
                     <div class="radio">
                         <label>
                             <input type="radio" name="sex" id="female" value="female"
-                                   <c:if test="${sessionScope.get('sex') == 'female' }">checked</c:if>>
+                                   <c:if test="${sex == 'female' }">checked</c:if>>
                             Женский
                         </label>
                     </div>
                 </td>
 
                 <td>
-                    <button class="btn btn-lg btn-primary btn-block" type="submit" value="Add">Добавить</button>
+                    <button id="add" class="btn btn-lg btn-primary btn-block" type="submit" value="Add">Добавить
+                    </button>
                 </td>
 
                 </tbody>
@@ -100,7 +108,6 @@
             </table>
 
         </div>
-
     </form>
 
     <div class="container-fluid">
@@ -124,7 +131,7 @@
             </tr>
             </thead>
 
-            <c:forEach items="${sessionScope.users}" var="user">
+            <c:forEach items="${users}" var="user">
 
                 <tbody>
                 <th scope="row">${user.getId()}</th>
@@ -135,8 +142,8 @@
                 <td>${user.getLastName()}</td>
                 <td>${user.getBirthday()}</td>
                 <td>${user.getSex().toString()}</td>
-                <td><a href="/user-edit?id=${user.getId()}">Изменить</a></td>
-                <td><a href="/user-delete?id=${user.getId()}">Удалить</a></td>
+                <td><a href="/admin/user-edit?id=${user.getId()}">Изменить</a></td>
+                <td><a href="/admin/user-delete?id=${user.getId()}">Удалить</a></td>
                 </tbody>
 
             </c:forEach>

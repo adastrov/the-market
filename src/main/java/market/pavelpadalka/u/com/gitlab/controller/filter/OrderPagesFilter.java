@@ -16,6 +16,8 @@ public class OrderPagesFilter implements Filter {
     public void init(FilterConfig filterConfig) throws ServletException {
 
         userRoleList.add(UserRoleEnum.USER.toString().toLowerCase());
+        userRoleList.add(UserRoleEnum.ADMIN.toString().toLowerCase());
+        userRoleList.add(UserRoleEnum.CONTENT_MANAGER.toString().toLowerCase());
 
     }
 

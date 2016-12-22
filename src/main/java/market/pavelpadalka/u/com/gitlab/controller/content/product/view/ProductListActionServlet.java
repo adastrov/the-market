@@ -26,7 +26,7 @@ public class ProductListActionServlet extends HttpServlet {
 
         req.getSession().setAttribute("products", productDTOList);
 
-        req.getRequestDispatcher("pages/product/product-list.jsp").include(req, resp);
+        req.getRequestDispatcher("/pages/product/product-list.jsp").include(req, resp);
 
     }
 
@@ -41,7 +41,7 @@ public class ProductListActionServlet extends HttpServlet {
 
         if (productDTO==null) {
             req.setAttribute("error", "Internal server error");
-            resp.sendRedirect("/product-list");
+            resp.sendRedirect("/pages/product/product-list");
             return;
         }
 
@@ -61,7 +61,7 @@ public class ProductListActionServlet extends HttpServlet {
         session.setAttribute("userBasket", resUserBasket);
         session.setAttribute("countOfProductsInBasket", resUserBasket.size());
 
-        req.getRequestDispatcher("pages/product/product-list.jsp").include(req, resp);
+        req.getRequestDispatcher("/pages/product/product-list.jsp").include(req, resp);
 
     }
 

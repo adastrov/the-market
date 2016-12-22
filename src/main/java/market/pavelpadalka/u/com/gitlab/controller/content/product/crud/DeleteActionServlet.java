@@ -29,7 +29,7 @@ public class DeleteActionServlet extends HttpServlet {
         }
 
         req.setAttribute("error", error);
-        resp.sendRedirect("/product-list-edit");
+        resp.sendRedirect("/content/product-list-edit");
 
     }
 

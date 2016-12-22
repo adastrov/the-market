@@ -29,7 +29,7 @@ public class BasketProductListActionServlet extends HttpServlet {
         }
 
         req.setAttribute("doNotShowRegisterAndIncomeButtons", true);
-        req.getRequestDispatcher("pages/basket/basket-product-list.jsp").include(req, resp);
+        req.getRequestDispatcher("/pages/order/basket-product-list.jsp").include(req, resp);
 
     }
 

@@ -45,61 +45,77 @@
                                     class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li class="divider"></li>
-                                <li><a href="<c:url value="/product-list-edit"/>">Список товаров</a></li>
+                                <li><a href="<c:url value="/content/product-list-edit"/>">Список товаров</a></li>
                                 <li class="divider"></li>
-                                <li><a href="<c:url value="/users-list"/>">Список пользователей</a></li>
+                                <li><a href="<c:url value="/admin/users-list"/>">Список пользователей</a></li>
                             </ul>
                         </li>
                     </c:if>
 
                 </ul>
 
-                <form class="navbar-form navbar-right">
+                <ul class="nav navbar-nav navbar-right">
 
                     <c:if test="${empty doNotShowRegisterAndIncomeButtons}">
                         <c:choose>
                             <c:when test="${empty sessionScope.get('user')}">
-                                <a class="btn btn-primary regis" href="<c:url value="/register" />" role="button">Регистрация</a>
-                                <a class="btn btn-success" href="<c:url value="/login" />" role="button">Войти</a>
+                                <li>
+                                    <a href="<c:url value="/register"/>">
+                                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Регистрация
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="<c:url value="/login"/>">
+                                        <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Войти
+                                    </a>
+                                </li>
                             </c:when>
 
                             <c:otherwise>
-                                <div>
-                                <span class="userName">Ваш логин: <span
-                                        class="boldText"> "${sessionScope.get('user').getLogin()}" </span></span>
-                                    <a class="btn btn-danger pull-right" href="<c:url value="/logout" />" role="button">Выйти</a>
-                                </div>
+
+                                <c:if test="${not empty sessionScope.get('user') and empty doNotShowBasketIcon}">
+                                    <li>
+                                        <a href="<c:url value="/order/basket-product-list"/>">
+
+                                            <span class="glyphicon glyphicon-shopping-cart"></span>
+                                            <span class="badge">
+                                                <c:choose>
+                                                    <c:when test="${not empty sessionScope.get('countOfProductsInBasket')}">
+                                                        ${sessionScope.get('countOfProductsInBasket')}
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        0
+                                                    </c:otherwise>
+                                                </c:choose>
+                                       </span>
+                                        </a>
+                                    </li>
+                                </c:if>
+
+                                <li>
+                                    <a href="<c:url value="/order/basket-product-list"/>">
+                                        <span class="glyphicon glyphicon-user"
+                                              aria-hidden="true"></span> ${sessionScope.get('user').getLogin()}
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="<c:url value="/logout"/>">
+                                        <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Выйти
+                                    </a>
+                                </li>
+
                             </c:otherwise>
                         </c:choose>
                     </c:if>
 
-                </form>
+                </ul>
 
             </div>
 
-        </div><!-- /.navbar-collapse -->
+        </div>
 
     </nav>
-
-    <c:if test="${not empty sessionScope.get('user') and empty doNotShowBasketIcon}">
-        <div class="container-fluid">
-            <form style="margin-top: 5px;" action="<c:url value='/added-product-list' />" method='GET'>
-
-                <button type="submit" class="btn btn-info">
-                    <span class="glyphicon glyphicon-shopping-cart"></span>
-                    <span class="badge">
-                        <c:choose>
-                            <c:when test="${not empty sessionScope.get('countOfProductsInBasket')}">
-                                ${sessionScope.get('countOfProductsInBasket')}
-                            </c:when>
-                            <c:otherwise>
-                                0
-                            </c:otherwise>
-                        </c:choose>
-                    </span></button>
-
-            </form>
-        </div>
-    </c:if>
 
 </div>

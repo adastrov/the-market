@@ -11,7 +11,7 @@
     <title>Список товаров</title>
 
     <link href="<c:url value="/pages/css/bootstrap.css" />" rel="stylesheet">
-    <link href="<c:url value="/pages/css/main.css" />" rel="stylesheet">
+    <link href="<c:url value="/pages/css/general.css" />" rel="stylesheet">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -25,7 +25,7 @@
 </header>
 
 <main>
-    <form name="registerForm" action="<c:url value='/product-add' />" method='POST'>
+    <form name="registerForm" action="<c:url value='/content/product-add' />" method='POST'>
         <div class="container-fluid">
 
             <h2>Добавить товар:</h2>
@@ -53,7 +53,7 @@
                     <select class="form-control" name="productGroup">
                         <option disabled>Укажите группы товара</option>
 
-                        <c:forEach items="${sessionScope.productGroups}" var="productGroup">
+                        <c:forEach items="${productGroups}" var="productGroup">
                             <option value=${productGroup.getId()}>${productGroup.getTitle()}</option>
                         </c:forEach>
                     </select>
@@ -100,7 +100,7 @@
             </tr>
             </thead>
 
-            <c:forEach items="${sessionScope.products}" var="product">
+            <c:forEach items="${products}" var="product">
 
                 <tbody>
 
@@ -110,8 +110,8 @@
                 <td>${product.getDescription()}</td>
                 <td>${product.getPrice()}</td>
                 <td>${product.getCount()}</td>
-                <td><a href="/product-edit?id=${product.getId()}">Изменить</a></td>
-                <td><a href="/product-delete?id=${product.getId()}">Удалить</a></td>
+                <td><a href="/content/product-edit?id=${product.getId()}">Изменить</a></td>
+                <td><a href="/content/product-delete?id=${product.getId()}">Удалить</a></td>
 
                 </tbody>
 

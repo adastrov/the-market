@@ -30,7 +30,7 @@ public class ListActionServlet extends HttpServlet {
         req.getSession().setAttribute("users", userDTOList);
         req.getSession().setAttribute("roles", userRoleDTOList);
 
-        req.getRequestDispatcher("pages/admin/users-list.jsp").include(req, resp);
+        req.getRequestDispatcher("/pages/admin/users-list.jsp").include(req, resp);
 
     }
 }
