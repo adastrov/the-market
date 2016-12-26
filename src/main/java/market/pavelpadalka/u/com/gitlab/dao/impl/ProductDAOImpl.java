@@ -2,11 +2,8 @@ package market.pavelpadalka.u.com.gitlab.dao.impl;
 
 import market.pavelpadalka.u.com.gitlab.dao.api.ProductDAO;
 import market.pavelpadalka.u.com.gitlab.datasource.DataSource;
+import market.pavelpadalka.u.com.gitlab.dto.ProductGroupDTO;
 import market.pavelpadalka.u.com.gitlab.entity.Product;
-import market.pavelpadalka.u.com.gitlab.entity.ProductGroup;
-import market.pavelpadalka.u.com.gitlab.helper.Transformer;
-import market.pavelpadalka.u.com.gitlab.service.api.ProductGroupService;
-import market.pavelpadalka.u.com.gitlab.service.impl.ProductGroupServiceImpl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,7 +16,6 @@ public class ProductDAOImpl implements ProductDAO {
 
     private static volatile ProductDAO instance;
     private static volatile DataSource dataSource;
-    private static volatile ProductGroupService productGroupService;
 
     private ProductDAOImpl() {
     }
@@ -30,7 +26,6 @@ public class ProductDAOImpl implements ProductDAO {
                 if (instance == null)
                     instance = new ProductDAOImpl();
                     dataSource = DataSource.getInstance();
-                    productGroupService = ProductGroupServiceImpl.getInstance();
             }
         }
         return instance;
@@ -41,7 +36,7 @@ public class ProductDAOImpl implements ProductDAO {
         Product product = null;
         Connection connection = dataSource.createConnection();
 
-        String findProductByIdQuery = "SELECT * FROM tbl_products WHERE product_id = ?";
+        String findProductByIdQuery = "SELECT * FROM tbl_products LEFT JOIN tbl_product_groups on tbl_product_groups.product_group_id = tbl_products.product_group_id WHERE product_id = ?";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(findProductByIdQuery);
@@ -58,6 +53,14 @@ public class ProductDAOImpl implements ProductDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
         }
 
         return product;
@@ -70,7 +73,7 @@ public class ProductDAOImpl implements ProductDAO {
 
         List<Product> productList = new LinkedList<Product>();
 
-        String findAllQuery = "SELECT * FROM tbl_products WHERE product_count > 0";
+        String findAllQuery = "SELECT * FROM tbl_products LEFT JOIN tbl_product_groups on tbl_product_groups.product_group_id = tbl_products.product_group_id WHERE product_count > 0";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(findAllQuery);
@@ -88,6 +91,14 @@ public class ProductDAOImpl implements ProductDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
         }
 
         return productList;
@@ -100,7 +111,7 @@ public class ProductDAOImpl implements ProductDAO {
 
         List<Product> productList = new LinkedList<Product>();
 
-        String findAllQuery = "SELECT * FROM tbl_products";
+        String findAllQuery = "SELECT * FROM tbl_products LEFT JOIN tbl_product_groups on tbl_product_groups.product_group_id = tbl_products.product_group_id";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(findAllQuery);
@@ -118,6 +129,14 @@ public class ProductDAOImpl implements ProductDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
         }
 
         return productList;
@@ -140,6 +159,14 @@ public class ProductDAOImpl implements ProductDAO {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
         }
 
         return product;
@@ -196,10 +223,13 @@ public class ProductDAOImpl implements ProductDAO {
         product.setPrice(resultSet.getDouble("product_price"));
         product.setCount(resultSet.getInt("product_count"));
 
-        ProductGroup productGroup = Transformer.transformProductGroupDTOToProductGroup(
-                productGroupService.findProductGroupById(resultSet.getInt("product_group_id")));
+        ProductGroupDTO productGroupDTO = new ProductGroupDTO();
 
-        product.setProductGroup(productGroup);
+        productGroupDTO.setId(resultSet.getInt("product_group_id"));
+        productGroupDTO.setTitle(resultSet.getString("product_group_title"));
+        productGroupDTO.setTitle(resultSet.getString("product_group_description"));
+
+        product.setProductGroup(productGroupDTO);
 
     }
 

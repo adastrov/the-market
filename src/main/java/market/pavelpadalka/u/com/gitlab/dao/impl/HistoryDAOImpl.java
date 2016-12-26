@@ -2,12 +2,7 @@ package market.pavelpadalka.u.com.gitlab.dao.impl;
 
 import market.pavelpadalka.u.com.gitlab.dao.api.HistoryDAO;
 import market.pavelpadalka.u.com.gitlab.datasource.DataSource;
-import market.pavelpadalka.u.com.gitlab.dto.ProductDTO;
 import market.pavelpadalka.u.com.gitlab.entity.History;
-import market.pavelpadalka.u.com.gitlab.entity.Product;
-import market.pavelpadalka.u.com.gitlab.helper.Transformer;
-import market.pavelpadalka.u.com.gitlab.service.api.ProductService;
-import market.pavelpadalka.u.com.gitlab.service.impl.ProductServiceImpl;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -17,7 +12,6 @@ public class HistoryDAOImpl implements HistoryDAO {
 
     private static volatile HistoryDAO instance;
     private static volatile DataSource dataSource;
-    private static ProductService productService = ProductServiceImpl.getInstance();
 
     private HistoryDAOImpl() {
     }
@@ -71,19 +65,19 @@ public class HistoryDAOImpl implements HistoryDAO {
 
             while (resultSet.next()) {
 
-                ProductDTO productDTO = productService.findProductById(resultSet.getInt("product_id"));
-                Product product = Transformer.transformProductDTOToProduct(productDTO);
-
-                History history = new History();
-                history.setId(resultSet.getInt("history_id"));
-                history.setProduct(product);
-
-                history.setProductCount(product.getCount());
-                history.setProductPrice(product.getPrice());
-
-                history.setDate(resultSet.getDate("history_date"));
-
-                historyList.add(history);
+//                ProductDTO productDTO = productService.findProductById(resultSet.getInt("product_id"));
+//                Product product = Transformer.transformProductDTOToProduct(productDTO);
+//
+//                History history = new History();
+//                history.setId(resultSet.getInt("history_id"));
+//                history.setProduct(product);
+//
+//                history.setProductCount(product.getCount());
+//                history.setProductPrice(product.getPrice());
+//
+//                history.setDate(resultSet.getDate("history_date"));
+//
+//                historyList.add(history);
 
             }
 

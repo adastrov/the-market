@@ -16,11 +16,48 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <script>
+
         $(document).on("click", "#add", function () {
-            $.post("/admin/user-add", function (response) {
-                $("#userAdd").test(response);
-            })
+
+            $.ajax({
+                method: 'post',
+                type: 'post',
+                url: '/admin/user-add',
+                data: {
+                    'username': $("#username").val(),
+                    'password': $("#password").val(),
+                    'email': $("#email").val(),
+                    'role': $("#role").val(),
+                    'firstName': $("#firstName").val(),
+                    'lastName': $("#lastName").val(),
+                    'birthday': $("#birthday").val(),
+                    'sex': $('input:radio[name=sex]:checked').val()
+                },
+                sucess: function (msg) {
+                    $("#userListForm").load("/pages/templates/users-list.jsp", function() {
+                    });
+                }
+            });
         });
+
+
+                function userRemoveAction() {
+
+                    $.ajax({
+                        method: 'get',
+                        type: 'get',
+                        url: "/admin/user-delete?id=59",
+
+                        sucess: function (msg) {
+                            $("#userListForm").load("/pages/templates/users-list.jsp", function() {
+                            });
+                        }
+                    });
+
+                };
+
+        href="/admin/user-delete?id=${user.getId()}"
+
     </script>
 </head>
 
@@ -32,7 +69,7 @@
 </header>
 
 <main>
-    <form id="userListForm">
+    <form>
         <div id="userAdd" class="container-fluid">
 
             <h2>Добавить пользователя:</h2>
@@ -55,15 +92,18 @@
                     </tr>
                     </thead>
 
-                <td><input type="text" class="form-control" name="username" placeholder="Логин" required autofocus
+                <td><input id="username" type="text" class="form-control" name="username" placeholder="Логин" required
+                           autofocus
                            value=""></td>
-                <td><input type="password" class="form-control" name="password" placeholder="Пароль" required value="">
+                <td><input id="password" type="password" class="form-control" name="password" placeholder="Пароль"
+                           required value="">
                 </td>
-                <td><input type="email" class="form-control" name="email" placeholder="E-mail" required value=""></td>
+                <td><input id="email" type="email" class="form-control" name="email" placeholder="E-mail" required
+                           value=""></td>
 
                 <td>
 
-                    <select class="form-control" name="role">
+                    <select id="role" class="form-control" name="role">
                         <option disabled>Укажите роль</option>
 
                         <c:forEach items="${roles}" var="role">
@@ -73,10 +113,13 @@
 
                 </td>
 
-                <td><input type="text" class="form-control" name="firstName" placeholder="Имя" required value=""></td>
-                <td><input type="text" class="form-control" name="lastName" placeholder="Фамилия" required value="">
+                <td><input id="firstName" type="text" class="form-control" name="firstName" placeholder="Имя" required
+                           value=""></td>
+                <td><input id="lastName" type="text" class="form-control" name="lastName" placeholder="Фамилия" required
+                           value="">
                 </td>
-                <td><input type="date" class="form-control" name="birthday" placeholder="Дата рождения" required
+                <td><input id="birthday" type="date" class="form-control" name="birthday" placeholder="Дата рождения"
+                           required
                            value=""></td>
 
                 <td>
@@ -110,7 +153,7 @@
         </div>
     </form>
 
-    <div class="container-fluid">
+    <div id="userListForm" class="container-fluid">
 
         <h2>Список пользователей:</h2>
 
@@ -143,7 +186,7 @@
                 <td>${user.getBirthday()}</td>
                 <td>${user.getSex().toString()}</td>
                 <td><a href="/admin/user-edit?id=${user.getId()}">Изменить</a></td>
-                <td><a href="/admin/user-delete?id=${user.getId()}">Удалить</a></td>
+                <td><a onclick="userRemoveAction();">Удалить</a></td>
                 </tbody>
 
             </c:forEach>

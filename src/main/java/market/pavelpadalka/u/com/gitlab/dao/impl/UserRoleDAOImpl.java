@@ -54,6 +54,12 @@ public class UserRoleDAOImpl implements UserRoleDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             userRole = null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return userRole;
@@ -84,6 +90,12 @@ public class UserRoleDAOImpl implements UserRoleDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             userRole = null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return userRole;
@@ -116,6 +128,12 @@ public class UserRoleDAOImpl implements UserRoleDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return userRoleList;
@@ -137,6 +155,12 @@ public class UserRoleDAOImpl implements UserRoleDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             userRole = null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return userRole;
@@ -157,6 +181,12 @@ public class UserRoleDAOImpl implements UserRoleDAO {
             resultCount = preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return resultCount > 0;
@@ -178,6 +208,12 @@ public class UserRoleDAOImpl implements UserRoleDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             userRole = null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return userRole;

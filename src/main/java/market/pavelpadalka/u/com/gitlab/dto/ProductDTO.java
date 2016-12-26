@@ -7,7 +7,7 @@ public class ProductDTO {
     private String  description;
     private Double  price;
     private Integer count;
-    private ProductGroupDTO productGroup;
+    private ProductGroupDTO productGroupDTO;
 
     public Integer getId() {
         return id;
@@ -50,10 +50,10 @@ public class ProductDTO {
     }
 
     public ProductGroupDTO getProductGroup() {
-        return productGroup;
+        return productGroupDTO;
     }
 
-    public void setProductGroup(ProductGroupDTO productGroup) {
-        this.productGroup = productGroup;
+    public void setProductGroup(ProductGroupDTO productGroupDTO) {
+        this.productGroupDTO = productGroupDTO;
     }
 }

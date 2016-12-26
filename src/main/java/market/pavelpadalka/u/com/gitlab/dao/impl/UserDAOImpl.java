@@ -2,6 +2,7 @@ package market.pavelpadalka.u.com.gitlab.dao.impl;
 
 import market.pavelpadalka.u.com.gitlab.dao.api.UserDAO;
 import market.pavelpadalka.u.com.gitlab.datasource.DataSource;
+import market.pavelpadalka.u.com.gitlab.dto.UserRoleDTO;
 import market.pavelpadalka.u.com.gitlab.entity.User;
 import market.pavelpadalka.u.com.gitlab.entity.UserSex;
 import market.pavelpadalka.u.com.gitlab.service.api.UserRoleService;
@@ -37,7 +38,7 @@ public class UserDAOImpl implements UserDAO {
         User user = null;
         Connection connection = dataSource.createConnection();
 
-        String findByLoginAndPasswordQuery = "SELECT * FROM tbl_users WHERE user_login=? and user_password=?";
+        String findByLoginAndPasswordQuery = "SELECT * FROM tbl_users LEFT JOIN tbl_roles on tbl_roles.role_id = tbl_users.user_role_id WHERE user_login=? and user_password=?";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(findByLoginAndPasswordQuery);
@@ -55,6 +56,12 @@ public class UserDAOImpl implements UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             user = null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return user;
@@ -66,7 +73,7 @@ public class UserDAOImpl implements UserDAO {
         User user = null;
         Connection connection = dataSource.createConnection();
 
-        String findByLoginAndEmailQuery = "SELECT * FROM tbl_users WHERE user_login=? and user_email=?";
+        String findByLoginAndEmailQuery = "SELECT * FROM tbl_users LEFT JOIN tbl_roles on tbl_roles.role_id = tbl_users.user_role_id WHERE user_login=? and user_email=?";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(findByLoginAndEmailQuery);
@@ -85,6 +92,12 @@ public class UserDAOImpl implements UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             user = null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return user;
@@ -96,7 +109,7 @@ public class UserDAOImpl implements UserDAO {
         User user = null;
         Connection connection = dataSource.createConnection();
 
-        String findByLoginAndPasswordQuery = "SELECT * FROM tbl_users WHERE user_id=?";
+        String findByLoginAndPasswordQuery = "SELECT * FROM tbl_users LEFT JOIN tbl_roles on tbl_roles.role_id = tbl_users.user_role_id WHERE user_id=?";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(findByLoginAndPasswordQuery);
@@ -113,6 +126,14 @@ public class UserDAOImpl implements UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             user = null;
+        } finally {
+
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
         }
 
         return user;
@@ -125,7 +146,7 @@ public class UserDAOImpl implements UserDAO {
 
         List<User> userList = new LinkedList<User>();
 
-        String findAllQuery = "SELECT * FROM tbl_users";
+        String findAllQuery = "SELECT * FROM tbl_users LEFT JOIN tbl_roles on tbl_roles.role_id = tbl_users.user_role_id";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(findAllQuery);
@@ -143,6 +164,12 @@ public class UserDAOImpl implements UserDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return userList;
@@ -170,6 +197,12 @@ public class UserDAOImpl implements UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             user = null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return user;
@@ -198,6 +231,12 @@ public class UserDAOImpl implements UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             user = null;
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return user;
@@ -218,6 +257,12 @@ public class UserDAOImpl implements UserDAO {
             resultCount = preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return resultCount > 0;
@@ -238,7 +283,12 @@ public class UserDAOImpl implements UserDAO {
 
         user.setSex(resultSet.getString("user_sex").toLowerCase().equals("male") ? UserSex.MALE : UserSex.FEMALE);
 
-        user.setRole(userRoleService.findByRoleId(resultSet.getInt("user_role_id")));
+        UserRoleDTO userRoleDTO = new UserRoleDTO();
+        userRoleDTO.setId(resultSet.getInt("role_id"));
+        userRoleDTO.setName(resultSet.getString("role_name"));
+        userRoleDTO.setDescription(resultSet.getString("role_description"));
+
+        user.setRole(userRoleDTO) ;
 
     }
 
