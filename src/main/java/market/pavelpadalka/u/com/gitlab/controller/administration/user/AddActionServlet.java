@@ -77,8 +77,6 @@ public class AddActionServlet extends HttpServlet {
 
         req.setAttribute("error", null);
 
-        req.getRequestDispatcher("/admin/users-list").include(req, resp);
-
     }
 
 }

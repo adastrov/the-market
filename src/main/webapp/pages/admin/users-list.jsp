@@ -33,32 +33,30 @@
                     'birthday': $("#birthday").val(),
                     'sex': $('input:radio[name=sex]:checked').val()
                 },
-                sucess: function (msg) {
-                    $("#userListForm").load("/pages/templates/users-list.jsp", function() {
+
+                success: function (response) {
+                    $("#userListForm").load("/admin/users-list #userListForm", function () {
                     });
                 }
             });
         });
 
+        function userRemoveAction(user_id) {
 
-                function userRemoveAction() {
+            $.ajax({
+                method: 'get',
+                type: 'get',
+                url: "/admin/user-delete?id=" + user_id,
 
-                    $.ajax({
-                        method: 'get',
-                        type: 'get',
-                        url: "/admin/user-delete?id=59",
-
-                        sucess: function (msg) {
-                            $("#userListForm").load("/pages/templates/users-list.jsp", function() {
-                            });
-                        }
+                success: function (response) {
+                    $("#userListForm").load("/admin/users-list #userListForm", function () {
                     });
-
-                };
-
-        href="/admin/user-delete?id=${user.getId()}"
+                }
+            });
+        };
 
     </script>
+
 </head>
 
 <body>
@@ -142,7 +140,7 @@
                 </td>
 
                 <td>
-                    <button id="add" class="btn btn-lg btn-primary btn-block" type="submit" value="Add">Добавить
+                    <button id="add" class="btn btn-lg btn-primary btn-block" type="button" value="Add">Добавить
                     </button>
                 </td>
 
@@ -186,7 +184,7 @@
                 <td>${user.getBirthday()}</td>
                 <td>${user.getSex().toString()}</td>
                 <td><a href="/admin/user-edit?id=${user.getId()}">Изменить</a></td>
-                <td><a onclick="userRemoveAction();">Удалить</a></td>
+                <td><a href="#" onclick="userRemoveAction(${user.getId()});return false;">Удалить</a></td>
                 </tbody>
 
             </c:forEach>
