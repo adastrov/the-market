@@ -77,8 +77,8 @@
 
                 <c:if test="${not empty sessionScope.get('user')}">
                     <td>
-                        <form style="margin-top: 5px;" action="<c:url value='/product-list' />" method='POST'>
-                            <button onclick="addProductToShoppingCart(${product.getId()});return false;" id="addToShoppingCart" class="btn btn-lg btn-primary btn-block" type="button" value="AddToShoppingCart">В корзину</button>
+                        <form style="margin-top: 5px;">
+                            <button onclick="addProductToShoppingCart(${product.getId()})" id="addToShoppingCart" class="btn btn-lg btn-primary btn-block" type="button" value="AddToShoppingCart">В корзину</button>
                         </form>
                     </td>
                 </c:if>

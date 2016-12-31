@@ -44,6 +44,8 @@ public class HistoryDAOImpl implements HistoryDAO {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeConnection(connection);
         }
 
         return history;
@@ -83,9 +85,22 @@ public class HistoryDAOImpl implements HistoryDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeConnection(connection);
         }
 
         return historyList;
 
     }
+
+    private void closeConnection(Connection connection) {
+
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }
