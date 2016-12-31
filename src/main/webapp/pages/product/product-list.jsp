@@ -15,12 +15,33 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+
+        function addProductToShoppingCart(product_id) {
+
+            $.ajax({
+                method: 'post',
+                type:   'post',
+                url:    '/product-list',
+                data: {
+                    'product_id': product_id
+                },
+
+                success: function (response) {
+//                    $("#pageHeader").load("/pages/templates/header-template.jsp", function () {
+//                    });
+                }
+            });
+        };
+
+    </script>
 
 </head>
 
 <body>
 
-<header>
+<header id="pageHeader">
     <%@include file="/pages/templates/header-template.jsp" %>
 </header>
 
@@ -57,7 +78,7 @@
                 <c:if test="${not empty sessionScope.get('user')}">
                     <td>
                         <form style="margin-top: 5px;" action="<c:url value='/product-list' />" method='POST'>
-                            <button class="btn btn-lg btn-primary btn-block" name="id" type="submit" value="${product.getId()}">В корзину</button>
+                            <button onclick="addProductToShoppingCart(${product.getId()});return false;" id="addToShoppingCart" class="btn btn-lg btn-primary btn-block" type="button" value="AddToShoppingCart">В корзину</button>
                         </form>
                     </td>
                 </c:if>

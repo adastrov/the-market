@@ -10,26 +10,26 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.LinkedList;
 
-@WebServlet({"/order/basket-product-list"})
-public class BasketProductListActionServlet extends HttpServlet {
+@WebServlet({"/order/shopping-cart"})
+public class ShoppingCartActionServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         HttpSession session = req.getSession(false);
 
-        LinkedList<ProductDTO> resUserBasket = new LinkedList<ProductDTO>();
+        LinkedList<ProductDTO> resUserShoppingCart = new LinkedList<ProductDTO>();
 
-        Object userBasket = session.getAttribute("userBasket");
+        Object userShoppingCart = session.getAttribute("userShoppingCart");
 
-        if (userBasket == null) {
-            req.getSession().setAttribute("products", resUserBasket);
+        if (userShoppingCart == null) {
+            req.getSession().setAttribute("products", resUserShoppingCart);
         } else {
-            req.getSession().setAttribute("products", userBasket);
+            req.getSession().setAttribute("products", userShoppingCart);
         }
 
         req.setAttribute("doNotShowRegisterAndIncomeButtons", true);
-        req.getRequestDispatcher("/pages/order/basket-product-list.jsp").include(req, resp);
+        req.getRequestDispatcher("/pages/order/shopping-cart.jsp").include(req, resp);
 
     }
 

@@ -140,8 +140,7 @@
                 </td>
 
                 <td>
-                    <button id="add" class="btn btn-lg btn-primary btn-block" type="button" value="Add">Добавить
-                    </button>
+                    <button id="add" class="btn btn-lg btn-primary btn-block" type="button" value="Add">Добавить</button>
                 </td>
 
                 </tbody>

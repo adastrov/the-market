@@ -35,7 +35,7 @@ public class ProductListActionServlet extends HttpServlet {
 
         ProductService productService = ProductServiceImpl.getInstance();
 
-        String  id = req.getParameter("id");
+        String  id = req.getParameter("product_id");
 
         ProductDTO productDTO = productService.findProductById(Integer.valueOf(id));
 
@@ -47,19 +47,19 @@ public class ProductListActionServlet extends HttpServlet {
 
         HttpSession session = req.getSession(false);
 
-        LinkedList<ProductDTO> resUserBasket = new LinkedList<ProductDTO>();
+        LinkedList<ProductDTO> resUserShoppingCart = new LinkedList<ProductDTO>();
 
-        Object userBasket = session.getAttribute("userBasket");
+        Object userShoppingCart = session.getAttribute("userShoppingCart");
 
-        if (userBasket == null) {
-            resUserBasket.add(productDTO);
+        if (userShoppingCart == null) {
+            resUserShoppingCart.add(productDTO);
         } else {
-            resUserBasket = (LinkedList<ProductDTO>) userBasket;
-            resUserBasket.add(productDTO);
+            resUserShoppingCart = (LinkedList<ProductDTO>) userShoppingCart;
+            resUserShoppingCart.add(productDTO);
         }
 
-        session.setAttribute("userBasket", resUserBasket);
-        session.setAttribute("countOfProductsInBasket", resUserBasket.size());
+        session.setAttribute("userShoppingCart", resUserShoppingCart); //userBasket
+        session.setAttribute("amountOfProductsInShoppingCart", resUserShoppingCart.size());  //countOfProductsInBasket
 
         req.getRequestDispatcher("/pages/product/product-list.jsp").include(req, resp);
 

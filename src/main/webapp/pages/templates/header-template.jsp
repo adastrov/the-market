@@ -74,15 +74,15 @@
 
                             <c:otherwise>
 
-                                <c:if test="${not empty sessionScope.get('user') and empty doNotShowBasketIcon}">
+                                <c:if test="${not empty sessionScope.get('user') and empty doNotShowShoppingCartIcon}">
                                     <li>
-                                        <a href="<c:url value="/order/basket-product-list"/>">
+                                        <a href="<c:url value="/order/shopping-cart"/>">
 
                                             <span class="glyphicon glyphicon-shopping-cart"></span>
                                             <span class="badge">
                                                 <c:choose>
-                                                    <c:when test="${not empty sessionScope.get('countOfProductsInBasket')}">
-                                                        ${sessionScope.get('countOfProductsInBasket')}
+                                                    <c:when test="${not empty sessionScope.get('amountOfProductsInShoppingCart')}">
+                                                        ${sessionScope.get('amountOfProductsInShoppingCart')}
                                                     </c:when>
                                                     <c:otherwise>
                                                         0
@@ -94,7 +94,7 @@
                                 </c:if>
 
                                 <li>
-                                    <a href="<c:url value="/order/basket-product-list"/>">
+                                    <a href="<c:url value="/order/shopping-cart"/>">
                                         <span class="glyphicon glyphicon-user"
                                               aria-hidden="true"></span> ${sessionScope.get('user').getLogin()}
                                     </a>

@@ -9,14 +9,15 @@ import market.pavelpadalka.u.com.gitlab.service.api.UserRoleService;
 import market.pavelpadalka.u.com.gitlab.service.impl.UserRoleServiceImpl;
 
 import java.sql.*;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 public class UserDAOImpl implements UserDAO {
 
-    private static volatile UserDAO          instance;
-    private static volatile DataSource       dataSource;
-    private static volatile UserRoleService  userRoleService;
+    private static volatile UserDAO instance;
+    private static volatile DataSource dataSource;
+    private static volatile UserRoleService userRoleService;
 
     private UserDAOImpl() {
     }
@@ -26,8 +27,8 @@ public class UserDAOImpl implements UserDAO {
             synchronized (UserDAOImpl.class) {
                 if (instance == null)
                     instance = new UserDAOImpl();
-                    dataSource = DataSource.getInstance();
-                    userRoleService = UserRoleServiceImpl.getInstance();
+                dataSource = DataSource.getInstance();
+                userRoleService = UserRoleServiceImpl.getInstance();
             }
         }
         return instance;
@@ -48,20 +49,14 @@ public class UserDAOImpl implements UserDAO {
 
             if (resultSet.next()) {
                 user = new User();
-
                 setDefaultUserFields(user, resultSet);
-
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
             user = null;
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            closeConnection(connection);
         }
 
         return user;
@@ -84,7 +79,6 @@ public class UserDAOImpl implements UserDAO {
             if (resultSet.next()) {
 
                 user = new User();
-
                 setDefaultUserFields(user, resultSet);
 
             }
@@ -93,11 +87,7 @@ public class UserDAOImpl implements UserDAO {
             e.printStackTrace();
             user = null;
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            closeConnection(connection);
         }
 
         return user;
@@ -118,22 +108,14 @@ public class UserDAOImpl implements UserDAO {
 
             if (resultSet.next()) {
                 user = new User();
-
                 setDefaultUserFields(user, resultSet);
-
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
             user = null;
         } finally {
-
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
+            closeConnection(connection);
         }
 
         return user;
@@ -146,7 +128,7 @@ public class UserDAOImpl implements UserDAO {
 
         List<User> userList = new LinkedList<User>();
 
-        String findAllQuery = "SELECT * FROM tbl_users LEFT JOIN tbl_roles on tbl_roles.role_id = tbl_users.user_role_id";
+        String findAllQuery = "SELECT * FROM tbl_users LEFT JOIN tbl_roles on tbl_roles.role_id = tbl_users.user_role_id ORDER BY tbl_users.user_id";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(findAllQuery);
@@ -165,11 +147,7 @@ public class UserDAOImpl implements UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            closeConnection(connection);
         }
 
         return userList;
@@ -189,20 +167,16 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.setString(3, user.getEmail());
             preparedStatement.setString(4, user.getFirstName());
             preparedStatement.setString(5, user.getLastName());
-            preparedStatement.setDate(6,   user.getBirthday());
+            preparedStatement.setDate(6, user.getBirthday());
             preparedStatement.setString(7, user.getSex().toString());
-            preparedStatement.setInt(8,   user.getRole().getId());
+            preparedStatement.setInt(8, user.getRole().getId());
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
             user = null;
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            closeConnection(connection);
         }
 
         return user;
@@ -222,21 +196,17 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.setString(3, user.getEmail());
             preparedStatement.setString(4, user.getFirstName());
             preparedStatement.setString(5, user.getLastName());
-            preparedStatement.setDate(6,   user.getBirthday());
+            preparedStatement.setDate(6, user.getBirthday());
             preparedStatement.setString(7, user.getSex().toString());
-            preparedStatement.setInt(8,    user.getRole().getId());
-            preparedStatement.setInt(9,    user.getId());
+            preparedStatement.setInt(8, user.getRole().getId());
+            preparedStatement.setInt(9, user.getId());
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
             user = null;
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            closeConnection(connection);
         }
 
         return user;
@@ -258,11 +228,7 @@ public class UserDAOImpl implements UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            closeConnection(connection);
         }
 
         return resultCount > 0;
@@ -288,7 +254,17 @@ public class UserDAOImpl implements UserDAO {
         userRoleDTO.setName(resultSet.getString("role_name"));
         userRoleDTO.setDescription(resultSet.getString("role_description"));
 
-        user.setRole(userRoleDTO) ;
+        user.setRole(userRoleDTO);
+
+    }
+
+    private void closeConnection(Connection connection) {
+
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 
