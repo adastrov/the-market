@@ -15,6 +15,45 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+
+        $(document).on("click", "#add", function () {
+
+            $.ajax({
+                method: 'post',
+                type: 'post',
+                url: '/content/product-add',
+                data: {
+                    'title': $("#title").val(),
+                    'productGroup': $("#productGroup").val(),
+                    'description': $("#description").val(),
+                    'price': $("#price").val(),
+                    'count': $("#count").val()
+                },
+
+                success: function (response) {
+                    $("#productListForm").load("/content/product-list-edit #productListForm", function () {
+                    });
+                }
+            });
+        });
+
+        function productRemoveAction(product_id) {
+
+            $.ajax({
+                method: 'get',
+                type: 'get',
+                url: "/content/product-delete?id=" + product_id,
+
+                success: function (response) {
+                    $("#productListForm").load("/content/product-list-edit #productListForm", function () {
+                    });
+                }
+            });
+        };
+
+    </script>
 
 </head>
 
@@ -45,12 +84,12 @@
                     </tr>
                     </thead>
 
-                <td><input type="text" class="form-control" name="title" placeholder="Наименование" required autofocus
+                <td><input id="title" type="text" class="form-control" name="title" placeholder="Наименование" required autofocus
                            value=""></td>
 
                 <td>
 
-                    <select class="form-control" name="productGroup">
+                    <select id="productGroup" class="form-control" name="productGroup">
                         <option disabled>Укажите группы товара</option>
 
                         <c:forEach items="${productGroups}" var="productGroup">
@@ -60,16 +99,16 @@
 
                 </td>
 
-                <td><input type="text" class="form-control" name="description" placeholder="Описание" required autofocus
+                <td><input id="description" type="text" class="form-control" name="description" placeholder="Описание" required autofocus
                            value=""></td>
 
-                <td><input type="number" class="form-control" name="price" placeholder="Цена" required autofocus
+                <td><input id="price" type="number" class="form-control" name="price" placeholder="Цена" required autofocus
                            value=""></td>
-                <td><input type="number" class="form-control" name="count" placeholder="Количество" required autofocus
+                <td><input id="count" type="number" class="form-control" name="count" placeholder="Количество" required autofocus
                            value=""></td>
 
                 <td>
-                    <button class="btn btn-lg btn-primary btn-block" type="submit" value="Add">Добавить</button>
+                    <button id="add" class="btn btn-lg btn-primary btn-block" type="button" value="Add">Добавить</button>
                 </td>
 
                 </tbody>
@@ -81,7 +120,7 @@
     </form>
 
 
-    <div class="container-fluid">
+    <div id="productListForm" class="container-fluid">
 
         <h2>Список товаров:</h2>
 
@@ -111,7 +150,7 @@
                 <td>${product.getPrice()}</td>
                 <td>${product.getCount()}</td>
                 <td><a href="/content/product-edit?id=${product.getId()}">Изменить</a></td>
-                <td><a href="/content/product-delete?id=${product.getId()}">Удалить</a></td>
+                <td><a href="#" onclick="productRemoveAction(${product.getId()});return false;">Удалить</a></td>
 
                 </tbody>
 

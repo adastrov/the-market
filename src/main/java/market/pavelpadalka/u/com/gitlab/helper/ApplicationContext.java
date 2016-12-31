@@ -1,32 +1,28 @@
 package market.pavelpadalka.u.com.gitlab.helper;
 
 import market.pavelpadalka.u.com.gitlab.datasource.DataSource;
-import market.pavelpadalka.u.com.gitlab.holder.AppPropertiesHolder;
 
 import java.io.*;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.LinkedList;
+import java.util.Scanner;
 
 public class ApplicationContext {
 
     private static DataSource dataSource = DataSource.getInstance();
-    private static AppPropertiesHolder propertiesHolder = AppPropertiesHolder.getInstance();
 
-    public static void init() {
+    public static void init(File file) {
 
-        executeBatchQuery(propertiesHolder.getDatabaseStructureCreationScript());
-        executeBatchQuery(propertiesHolder.getDatabaseDataInsertScript());
+        String[] queriesForBatch = getQueriesForBatch(file);
+
+        executeBatchQuery(queriesForBatch);
 
     }
 
-    private static void executeBatchQuery(String query) {
+    private static void executeBatchQuery(String[] queriesForBatch ) {
 
         Connection connection = dataSource.createConnection();
-
-        LinkedList<String> queriesForBatch = getQueriesForBatch(query);
 
         try {
 
@@ -40,46 +36,45 @@ public class ApplicationContext {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeConnection(connection);
         }
 
     }
 
-    private static LinkedList<String> getQueriesForBatch(String fileName)  {
+    private static String[] getQueriesForBatch(File file) {
 
-        StringBuilder sb = new StringBuilder();
-        LinkedList<String> stringLinkedList = new LinkedList<String>();
+        String[] queriesStringArray;
+        StringBuilder incomeFileData = new StringBuilder();
 
         try {
 
-            InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
+            Scanner scanner = new Scanner(new FileReader(file));
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-
-
-            try {
-
-                String s;
-
-                while ((s = in.readLine()) != null) {
-
-                    sb.append(s);
-                    sb.append("\n");
-
-                    if(s.contains(";")) {
-                        stringLinkedList.add(sb.toString());
-                        sb.delete(0, sb.length());
-                    }
-
-                }
-            } finally {
-                in.close();
+            while (scanner.hasNext()) {
+                incomeFileData.append(scanner.next()).append(" ");
             }
 
-        } catch(IOException e) {
+            scanner.close();
+
+            queriesStringArray = incomeFileData.toString().split(";");
+
+
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        return stringLinkedList;
+        return queriesStringArray;
+
+    }
+
+    private static void closeConnection(Connection connection) {
+
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 

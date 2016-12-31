@@ -9,7 +9,6 @@ import market.pavelpadalka.u.com.gitlab.service.api.UserRoleService;
 import market.pavelpadalka.u.com.gitlab.service.impl.UserRoleServiceImpl;
 
 import java.sql.*;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -77,10 +76,8 @@ public class UserDAOImpl implements UserDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-
                 user = new User();
                 setDefaultUserFields(user, resultSet);
-
             }
 
         } catch (SQLException e) {
