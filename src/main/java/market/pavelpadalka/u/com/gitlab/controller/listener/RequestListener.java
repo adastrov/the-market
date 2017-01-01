@@ -8,10 +8,10 @@ import javax.servlet.annotation.WebListener;
 public class RequestListener implements ServletRequestListener{
 
     public void requestDestroyed(ServletRequestEvent servletRequestEvent) {
-        System.out.println("requestDestroyed");
+
     }
 
     public void requestInitialized(ServletRequestEvent servletRequestEvent) {
-        System.out.println("requestInitialized");
+
     }
 }

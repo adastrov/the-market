@@ -1,14 +1,20 @@
 package market.pavelpadalka.u.com.gitlab.controller.filter;
 
+import com.sun.deploy.net.HttpRequest;
 import market.pavelpadalka.u.com.gitlab.dto.UserDTO;
 import market.pavelpadalka.u.com.gitlab.dto.UserRoleDTO;
+import market.pavelpadalka.u.com.gitlab.service.api.UserService;
+import market.pavelpadalka.u.com.gitlab.service.impl.UserServiceImpl;
 
 import javax.servlet.*;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.LinkedList;
+
+import static market.pavelpadalka.u.com.gitlab.entity.UserRoleEnum.ADMIN;
 
 public class MainFilter {
 
@@ -21,6 +27,13 @@ public class MainFilter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         HttpSession session = request.getSession(false);
+
+        getDataFromCookies(session, request);
+
+        if (userRoleName==null) {
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
 
         if (session == null || session.getAttribute("user") == null) {
             response.sendRedirect("/access-denied");
@@ -36,6 +49,53 @@ public class MainFilter {
         }
 
         filterChain.doFilter(servletRequest, servletResponse);
+
+    }
+
+    private static void getDataFromCookies(HttpSession session, HttpServletRequest request) {
+
+        if (session == null || session.getAttribute("user") == null) {
+
+            Cookie[] cookies   = request.getCookies();
+            String loginCookie = null;
+            String pwdCookie   = null;
+
+            if(cookies != null) {
+                for (Cookie cookie : cookies) {
+                    String name = cookie.getName();
+                    String value = cookie.getValue();
+
+                    if (name.equals("username")) {
+                        loginCookie = value;
+                    }
+                    if (name.equals("password")) {
+                        pwdCookie = value;
+                    }
+                }
+            }
+
+            if (loginCookie!=null && pwdCookie!=null) {
+
+                UserService userService = UserServiceImpl.getInstance();
+
+                UserDTO userDTO = userService.findByLoginAndPassword(loginCookie, pwdCookie);
+
+                if (userDTO!=null) {
+                    session = request.getSession();
+
+                    request.setAttribute("doNotShowRegisterAndIncomeButtons", null);
+
+                    request.setAttribute("error", null);
+                    session.setAttribute("user",  userDTO);
+                    session.setAttribute("currentUserAdmin", userDTO.getRole().getName().toLowerCase().equals(ADMIN.toString().toLowerCase()));
+
+                    session.setAttribute("user", userDTO);
+
+                }
+
+            }
+
+        }
 
     }
 

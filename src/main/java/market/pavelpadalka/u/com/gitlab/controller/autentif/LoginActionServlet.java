@@ -7,16 +7,14 @@ import market.pavelpadalka.u.com.gitlab.service.impl.UserServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
+import java.io.PrintWriter;
+
+import static market.pavelpadalka.u.com.gitlab.entity.UserRoleEnum.ADMIN;
 
 @WebServlet({"/login"})
 public class LoginActionServlet extends HttpServlet {
-
-    private final static String ADMIN = UserRoleEnum.ADMIN.toString().toLowerCase();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -51,7 +49,13 @@ public class LoginActionServlet extends HttpServlet {
 
         req.setAttribute("error", null);
         session.setAttribute("user",  userDTO);
-        session.setAttribute("currentUserAdmin", userDTO.getRole().getName().toLowerCase().equals(ADMIN));
+        session.setAttribute("currentUserAdmin", userDTO.getRole().getName().toLowerCase().equals(ADMIN.toString().toLowerCase()));
+
+        Cookie loginCookie = new Cookie("username", login);
+        Cookie pwdCookie   = new Cookie("password", password);
+
+        resp.addCookie(loginCookie);
+        resp.addCookie(pwdCookie);
 
         req.getRequestDispatcher("/pages/index.jsp").include(req, resp);
 

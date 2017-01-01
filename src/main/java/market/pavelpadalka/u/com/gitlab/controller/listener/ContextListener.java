@@ -17,11 +17,11 @@ public class ContextListener implements ServletContextListener{
 
     public void contextInitialized(ServletContextEvent servletContextEvent) {
 
-        File createDBScriptFile        = getFileFromURL(propertiesHolder.getDatabaseStructureCreationScript());
-        File insertDataIntoDBScriptUrl = getFileFromURL(propertiesHolder.getDatabaseStructureCreationScript());
-
-        ApplicationContext.init(createDBScriptFile);
-        ApplicationContext.init(insertDataIntoDBScriptUrl);
+//        File createDBScriptFile        = getFileFromURL(propertiesHolder.getDatabaseStructureCreationScript());
+//        File insertDataIntoDBScriptUrl = getFileFromURL(propertiesHolder.getDatabaseDataInsertScript());
+//
+//        ApplicationContext.init(createDBScriptFile);
+//        ApplicationContext.init(insertDataIntoDBScriptUrl);
 
     }
 

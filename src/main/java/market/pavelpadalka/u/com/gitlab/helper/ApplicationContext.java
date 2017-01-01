@@ -29,7 +29,12 @@ public class ApplicationContext {
             Statement statement = connection.createStatement();
 
             for (String currentQuery : queriesForBatch) {
-                statement.addBatch(currentQuery);
+
+                if (currentQuery.trim().length() == 0) {
+                    continue;
+                }
+
+                statement.addBatch(currentQuery + ";");
             }
 
             statement.executeBatch();
@@ -58,7 +63,6 @@ public class ApplicationContext {
             scanner.close();
 
             queriesStringArray = incomeFileData.toString().split(";");
-
 
         } catch (IOException e) {
             throw new RuntimeException(e);

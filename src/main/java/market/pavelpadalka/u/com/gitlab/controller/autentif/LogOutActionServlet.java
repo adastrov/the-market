@@ -2,10 +2,7 @@ package market.pavelpadalka.u.com.gitlab.controller.autentif;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 @WebServlet({"/logout"})
@@ -17,6 +14,12 @@ public class LogOutActionServlet extends HttpServlet {
         HttpSession session = req.getSession(false);
         session.setAttribute("user", null);
         session.setAttribute("currentUserAdmin", false);
+
+        Cookie loginCookie = new Cookie("username", null);
+        Cookie pwdCookie   = new Cookie("password", null);
+
+        resp.addCookie(loginCookie);
+        resp.addCookie(pwdCookie);
 
         req.getRequestDispatcher("/pages/index.jsp").include(req, resp);
 
