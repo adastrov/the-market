@@ -28,11 +28,10 @@
 
         <form name="loginForm" action="<c:url value='/login' />" method='POST'>
             <h2>Эл. адрес или телефон</h2>
-            <input type="text" class="form-control" name="username" placeholder="Email address" required autofocus
-                   value="">
+            <input type="text" class="form-control" name="username" placeholder="Email address" required autofocus value="" autocomplete="on">
             <br>
             <h3>Пароль</h3>
-            <input type="password" class="form-control" name="password" placeholder="Password" required value="">
+            <input type="password" class="form-control" name="password" placeholder="Password" required value="" autocomplete="off">
             <br>
             <p> Новый пользователь? <a href="/register">Рергистрация</a></p>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>

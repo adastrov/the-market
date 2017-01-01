@@ -11,6 +11,7 @@ import market.pavelpadalka.u.com.gitlab.service.impl.UserServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -87,6 +88,12 @@ public class RegisterActionServlet extends HttpServlet {
 
         req.setAttribute("error", null);
         req.setAttribute("user",  createdUser);
+
+        Cookie loginCookie = new Cookie("username", login);
+        Cookie pwdCookie   = new Cookie("password", password);
+
+        resp.addCookie(loginCookie);
+        resp.addCookie(pwdCookie);
 
         req.getRequestDispatcher("/pages/index.jsp").include(req, resp);
 
