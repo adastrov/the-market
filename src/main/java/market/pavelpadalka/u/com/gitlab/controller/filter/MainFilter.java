@@ -1,6 +1,5 @@
 package market.pavelpadalka.u.com.gitlab.controller.filter;
 
-import com.sun.deploy.net.HttpRequest;
 import market.pavelpadalka.u.com.gitlab.dto.UserDTO;
 import market.pavelpadalka.u.com.gitlab.dto.UserRoleDTO;
 import market.pavelpadalka.u.com.gitlab.service.api.UserService;
