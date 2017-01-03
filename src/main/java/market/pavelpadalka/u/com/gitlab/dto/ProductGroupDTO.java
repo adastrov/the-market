@@ -41,6 +41,24 @@ public class ProductGroupDTO {
         this.product = product;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        ProductGroupDTO that = (ProductGroupDTO) o;
 
+        if (!id.equals(that.id)) return false;
+        if (!title.equals(that.title)) return false;
+        return description.equals(that.description);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + title.hashCode();
+        result = 31 * result + description.hashCode();
+        return result;
+    }
 }

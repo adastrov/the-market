@@ -105,15 +105,28 @@ public class User {
 
         User user = (User) o;
 
+        if (!id.equals(user.id)) return false;
+        if (!firstName.equals(user.firstName)) return false;
+        if (!lastName.equals(user.lastName)) return false;
+        if (!birthday.equals(user.birthday)) return false;
         if (!login.equals(user.login)) return false;
-        return password.equals(user.password);
+        if (!password.equals(user.password)) return false;
+        if (sex != user.sex) return false;
+        if (!email.equals(user.email)) return false;
+        return role.equals(user.role);
 
     }
 
     @Override
     public int hashCode() {
-        int result = login.hashCode();
+        int result = id.hashCode();
+        result = 31 * result + firstName.hashCode();
+        result = 31 * result + lastName.hashCode();
+        result = 31 * result + birthday.hashCode();
+        result = 31 * result + login.hashCode();
         result = 31 * result + password.hashCode();
+        result = 31 * result + sex.hashCode();
+        result = 31 * result + email.hashCode();
         return result;
     }
 

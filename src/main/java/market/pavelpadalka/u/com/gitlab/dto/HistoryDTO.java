@@ -61,4 +61,32 @@ public class HistoryDTO {
     public void setDate(Date date) {
         this.date = date;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        HistoryDTO that = (HistoryDTO) o;
+
+        if (!id.equals(that.id)) return false;
+        if (!user.equals(that.user)) return false;
+        if (!product.equals(that.product)) return false;
+        if (!productCount.equals(that.productCount)) return false;
+        if (!productPrice.equals(that.productPrice)) return false;
+        return date.equals(that.date);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + user.hashCode();
+        result = 31 * result + product.hashCode();
+        result = 31 * result + productCount.hashCode();
+        result = 31 * result + productPrice.hashCode();
+        result = 31 * result + date.hashCode();
+        return result;
+    }
 }

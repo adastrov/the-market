@@ -58,4 +58,32 @@ public class History {
     public void setProductPrice(Double productPrice) {
         this.productPrice = productPrice;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        History history = (History) o;
+
+        if (!id.equals(history.id)) return false;
+        if (!user.equals(history.user)) return false;
+        if (!product.equals(history.product)) return false;
+        if (!productCount.equals(history.productCount)) return false;
+        if (!productPrice.equals(history.productPrice)) return false;
+        return date.equals(history.date);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + user.hashCode();
+        result = 31 * result + product.hashCode();
+        result = 31 * result + productCount.hashCode();
+        result = 31 * result + productPrice.hashCode();
+        result = 31 * result + date.hashCode();
+        return result;
+    }
+
 }
