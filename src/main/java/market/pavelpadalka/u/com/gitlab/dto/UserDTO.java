@@ -99,4 +99,38 @@ public class UserDTO {
     public void setHistoryDTOList(List<HistoryDTO> historyDTOList) {
         this.historyDTOList = historyDTOList;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserDTO userDTO = (UserDTO) o;
+
+        if (!id.equals(userDTO.id)) return false;
+        if (!firstName.equals(userDTO.firstName)) return false;
+        if (!lastName.equals(userDTO.lastName)) return false;
+        if (!birthday.equals(userDTO.birthday)) return false;
+        if (!login.equals(userDTO.login)) return false;
+        if (!password.equals(userDTO.password)) return false;
+        if (sex != userDTO.sex) return false;
+        if (!email.equals(userDTO.email)) return false;
+        return role.equals(userDTO.role);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + firstName.hashCode();
+        result = 31 * result + lastName.hashCode();
+        result = 31 * result + birthday.hashCode();
+        result = 31 * result + login.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + sex.hashCode();
+        result = 31 * result + email.hashCode();
+        result = 31 * result + role.hashCode();
+        return result;
+    }
+
 }
